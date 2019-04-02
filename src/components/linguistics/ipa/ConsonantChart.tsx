@@ -8,6 +8,12 @@ import consonants, {
 import strings from '../../../config/strings';
 import Optional from '../../../models/Optional';
 
+/**
+ * Maps unique array values to the indicies they appear in. Pretty much only useful for the place/manner of articulation
+ * stuff, which could use an easy way to remap the values back to their indicies
+ * @param array
+ * @param map
+ */
 function mapValuesToIndicies<T>(array: T[], map: any): void {
     for (let i = 0; i < array.length; ++i) {
         map[array[i]] = i;
@@ -71,24 +77,11 @@ const ColumnLabel = styled.th`
   padding-right: 0.5rem;
 `;
 
-const YAxisLabel = styled.div`
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    transform: rotate(180deg);
-    text-align: center;
-    display: inline-block;
-`;
-
-const XAxisLabel = styled.div`
-  text-align: center;
-`;
-
-const ChartWithLabelsContainer = styled.div`
+const TableContainer = styled.div`
   display: flex;
-  flex-direction: column;
-`;
-
-const ChartContainer = styled.div`
+  align-content: center;
+  justify-content: center;
+  flex-grow: 0;
 `;
 
 const ConsonantChartHeader = () => {
@@ -119,34 +112,30 @@ const ConsonantChartBody = () => {
     for (const mannerOfArticulation of mannerOfArticulationOrder) {
         const mannerData = tableData[mannerToIndex[mannerOfArticulation]];
         const row = [
-            <RowLabel key={`manner-${mannerOfArticulation}`}>
+            <RowLabel key={`label-manner-${mannerOfArticulation}`}>
                 {strings.mannerOfArticulation[mannerOfArticulation]}
             </RowLabel>
         ];
 
         for (const placeOfArticulation of placeOfArticulationOrder) {
             const placeData = mannerData[placeToIndex[placeOfArticulation]];
-            const entry = [];
 
             for (const voicing of voicingOrder) {
                 const sound = placeData[voicingToIndex[voicing]];
 
-                entry.push(
+                row.push(
                     <td key={`${mannerOfArticulation}-${placeOfArticulation}-${voicing}`}>
-                        <SoundContainer>
+                        <SoundContainer
+                            title={`${strings.voicing[voicing]} ${strings.placesOfArticulation[placeOfArticulation]} ${strings.mannerOfArticulation[mannerOfArticulation]}`}>
                             {sound}
                         </SoundContainer>
                     </td>
                 );
             }
-
-            row.push(
-                ...entry
-            );
         }
 
         rows.push(
-            <tr>
+            <tr key={`manner-${mannerOfArticulation}`}>
                 {row}
             </tr>
         );
@@ -161,22 +150,14 @@ const ConsonantChartBody = () => {
 
 const ConsonantChart: React.FC = () => {
     return (
-        <ChartWithLabelsContainer>
-            <XAxisLabel>
-                {strings.ipaChart.xAxisLabel}
-            </XAxisLabel>
-            <ChartContainer>
-                <YAxisLabel>
-                    {strings.ipaChart.yAxisLabel}
-                </YAxisLabel>
-                <TableComponent>
-                    <tbody>
-                    <ConsonantChartHeader/>
-                    <ConsonantChartBody/>
-                    </tbody>
-                </TableComponent>
-            </ChartContainer>
-        </ChartWithLabelsContainer>
+        <TableContainer>
+            <TableComponent>
+                <tbody>
+                <ConsonantChartHeader/>
+                <ConsonantChartBody/>
+                </tbody>
+            </TableComponent>
+        </TableContainer>
     );
 };
 

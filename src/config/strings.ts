@@ -1,6 +1,6 @@
-import { MannerOfArticulation, PlaceOfArticulation } from '../api/linguistics/ipa/consonants';
+import { MannerOfArticulation, PlaceOfArticulation, Voicing } from '../api/linguistics/ipa/consonants';
 export default {
-    siteName: 'Linguistics Website',
+    siteName: 'Test Title',
     placesOfArticulation: {
         [PlaceOfArticulation.bilabial]: 'Bilabial',
         [PlaceOfArticulation.labiodental]: 'Labio-Dental',
@@ -19,6 +19,10 @@ export default {
         [MannerOfArticulation.lateralLiquid]: 'Lateral Liquid',
         [MannerOfArticulation.retroflexLiquid]: 'Retroflex Liquid',
         [MannerOfArticulation.glide]: 'Glide'
+    },
+    voicing: {
+        [Voicing.voiceless]: 'Voiceless',
+        [Voicing.voiced]: 'Voiced'
     },
     ipaChart: {
         yAxisLabel: 'Manner of Articulation',
