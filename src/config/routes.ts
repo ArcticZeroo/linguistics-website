@@ -1,14 +1,14 @@
 export default {
     environment: {
         title: 'Phonetic Environment',
-        url: 'environment'
+        url: '/environment'
     },
     syllabification: {
         title: 'Syllabification',
-        url: 'syllabification'
+        url: '/syllabification'
     },
     morphology: {
         title: 'Morphological Analysis',
-        url: 'morphology'
+        url: '/morphology'
     }
 }

@@ -29,88 +29,6 @@ interface IConsonantData {
     voicing: Voicing;
 }
 
-const consonantTable = {
-    [PlaceOfArticulation.bilabial]: {
-        [MannerOfArticulation.stop]: {
-            [Voicing.voiceless]: 'p',
-            [Voicing.voiced]: 'b'
-        },
-        [MannerOfArticulation.nasal]: {
-            [Voicing.voiced]: 'm'
-        },
-        [MannerOfArticulation.glide]: {
-            [Voicing.voiced]: 'w'
-        }
-    },
-    [PlaceOfArticulation.labiodental]: {
-        [MannerOfArticulation.fricative]: {
-            [Voicing.voiceless]: 'f',
-            [Voicing.voiced]: 'v'
-        }
-    },
-    [PlaceOfArticulation.interdental]: {
-        [MannerOfArticulation.fricative]: {
-            [Voicing.voiceless]: 'θ',
-            [Voicing.voiced]: 'ð'
-        }
-    },
-    [PlaceOfArticulation.alveolar]: {
-        [MannerOfArticulation.stop]: {
-            [Voicing.voiceless]: 't',
-            [Voicing.voiced]: 'd'
-        },
-        [MannerOfArticulation.fricative]: {
-            [Voicing.voiceless]: 's',
-            [Voicing.voiced]: 'z'
-        },
-        [MannerOfArticulation.nasal]: {
-            [Voicing.voiced]: 'n'
-        },
-        [MannerOfArticulation.flap]: {
-            [Voicing.voiced]: ''
-        },
-        [MannerOfArticulation.lateralLiquid]: {
-            [Voicing.voiced]: 'l'
-        },
-        [MannerOfArticulation.retroflexLiquid]: {
-            [Voicing.voiced]: ''
-        }
-    },
-    [PlaceOfArticulation.palatal]: {
-        [MannerOfArticulation.fricative]: {
-            [Voicing.voiceless]: '',
-            [Voicing.voiced]: ''
-        },
-        [MannerOfArticulation.affricate]: {
-            [Voicing.voiceless]: '',
-            [Voicing.voiced]: ''
-        },
-        [MannerOfArticulation.glide]: {
-            [Voicing.voiced]: 'j'
-        }
-    },
-    [PlaceOfArticulation.velar]: {
-        [MannerOfArticulation.stop]: {
-            [Voicing.voiceless]: 'k',
-            [Voicing.voiced]: 'g'
-        },
-        [MannerOfArticulation.nasal]: {
-            [Voicing.voiced]: ''
-        },
-        [MannerOfArticulation.lateralLiquid]: {
-            [Voicing.voiced]: ''
-        }
-    },
-    [PlaceOfArticulation.glottal]: {
-        [MannerOfArticulation.stop]: {
-            [Voicing.voiceless]: ''
-        },
-        [MannerOfArticulation.fricative]: {
-            [Voicing.voiceless]: ''
-        }
-    }
-};
-
 const placeOfArticulationOrder = [PlaceOfArticulation.bilabial, PlaceOfArticulation.labiodental, PlaceOfArticulation.interdental, PlaceOfArticulation.alveolar, PlaceOfArticulation.palatal, PlaceOfArticulation.velar, PlaceOfArticulation.glottal];
 const mannerOfArticulationOrder = [MannerOfArticulation.stop, MannerOfArticulation.fricative, MannerOfArticulation.affricate, MannerOfArticulation.nasal, MannerOfArticulation.flap, MannerOfArticulation.retroflexLiquid, MannerOfArticulation.lateralLiquid, MannerOfArticulation.glide];
 const voicingOrder = [Voicing.voiceless, Voicing.voiced];
@@ -253,9 +171,32 @@ const consonants: { [sound: string]: IConsonantData } = {
     }
 };
 
+function splitIpaIntoSymbols(source: string): string[] {
+    const symbols = [];
+
+    for (let i = 0; i < source.length; ++i) {
+        const current = source[i];
+
+        if (i < source.length - 1) {
+            const nextTwo = current + source[i + 1];
+
+            if (consonants.hasOwnProperty(nextTwo)) {
+                symbols.push(nextTwo);
+                i++;
+                continue;
+            }
+        }
+
+        symbols.push(current);
+    }
+
+    return symbols;
+}
+
 export {
     PlaceOfArticulation, MannerOfArticulation, Voicing,
-    placeOfArticulationOrder, mannerOfArticulationOrder, voicingOrder
+    placeOfArticulationOrder, mannerOfArticulationOrder, voicingOrder,
+    splitIpaIntoSymbols
 };
 
 export default consonants;

@@ -23,8 +23,17 @@ const RouteLinksContainer = styled.div`
     }
 `;
 
+const activeRouteStyle = {
+    color: 'white',
+    cursor: 'default'
+};
+
 const createRouteLinks = () => Object.values(routes)
-    .map(route => (<NavLink to={route.url} key={route.title} >{route.title}</NavLink>));
+    .map(route => (
+        <NavLink to={route.url} key={route.title} activeStyle={activeRouteStyle}>
+            {route.title}
+        </NavLink>
+    ));
 
 const HeaderNavigation: React.FC = () => {
     return (
