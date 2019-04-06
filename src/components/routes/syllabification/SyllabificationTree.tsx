@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import * as React from 'react';
 import { ISyllable } from '../../../api/linguistics/phonology/syllabification';
+import useCanvas from '../../../api/util/useCanvas';
 import Optional from '../../../models/Optional';
 import Position from '../../../models/Position';
 import Card from '../../styled/Card';
@@ -31,6 +32,14 @@ const syllableIdentifiers = {
     rhyme: 'R'
 };
 
+const canvasContainerProps = {
+    style: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+};
+
 function drawSyllableIdentifier(canvas: HTMLCanvasElement, x: number, y: number, identifier: string, size: number = letterWidthInPx) {
     const ctx = canvas.getContext('2d');
 
@@ -40,16 +49,6 @@ function drawSyllableIdentifier(canvas: HTMLCanvasElement, x: number, y: number,
 
     ctx.font = `${size}px ${fontFamily}`;
     ctx.fillText(identifier, x, y);
-}
-
-function clearChildren(div: Optional<HTMLDivElement>) {
-    if (!div) {
-        return;
-    }
-
-    while (div.lastChild) {
-        div.removeChild(div.lastChild);
-    }
 }
 
 function getOffset(i: number) {
@@ -62,10 +61,6 @@ function getLetterOffset(i: number) {
 
 function getBottomOffset(i: number) {
     return canvasHeightInPx - getOffset(i);
-}
-
-function getCenterOffset(i: number) {
-    return getOffset(i) + letterSpacingInPx / 2;
 }
 
 function drawLine(canvas: HTMLCanvasElement, from: Position, to: Position) {
@@ -164,38 +159,29 @@ function drawSigmaAndAttachNodes({ canvas, syllable, onsetIndex, nucleusIndex, c
     }
 }
 
+function drawWord(canvas: HTMLCanvasElement, word: string) {
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) {
+        console.error('Could not get canvas context');
+        return;
+    }
+
+    ctx.font = `${letterWidthInPx}px ${fontFamily}`;
+
+    for (let i = 0; i < word.length; ++i) {
+        ctx.fillText(word[i], getLetterOffset(i) + letterXOffsetInPx, letterDrawHeight);
+    }
+}
+
 const SyllabificationTree: React.FC<ISyllabificationDataProps> = ({ word, syllables }) => {
-    const ref = useRef<Optional<HTMLDivElement>>(null);
+    const canvasContainer = useCanvas(writeCanvas, canvasContainerProps);
 
-    function writeCanvas(div: HTMLDivElement) {
-        ref.current = div;
-
-        if (!div) {
-            return;
-        }
-
-        clearChildren(div);
-
-        const canvas = document.createElement('canvas');
-
+    function writeCanvas(canvas: HTMLCanvasElement) {
         canvas.width = (word.length * (letterWidthInPx + letterSpacingInPx));
         canvas.height = canvasHeightInPx;
 
-        const ctx = canvas.getContext('2d');
-
-        if (!ctx) {
-            console.error('Could not get canvas context');
-            return;
-        }
-
-        ctx.font = `${letterWidthInPx}px ${fontFamily}`;
-
-        for (let i = 0; i < word.length; ++i) {
-            ctx.fillText(word[i], getLetterOffset(i) + letterXOffsetInPx, letterDrawHeight);
-        }
-
-        console.log('About to draw the following:');
-        console.log(syllables);
+        drawWord(canvas, word);
 
         let i = 0;
         for (const syllable of syllables) {
@@ -235,13 +221,11 @@ const SyllabificationTree: React.FC<ISyllabificationDataProps> = ({ word, syllab
                 syllable
             });
         }
-
-        div.appendChild(canvas);
     }
 
     return (
         <Card title={`Syllabification tree for "${word}"`}>
-            <div ref={writeCanvas} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} />
+            {canvasContainer}
         </Card>
     );
 };
