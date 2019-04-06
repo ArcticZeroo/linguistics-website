@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const CardContainer = styled.div`
   border-radius: 0.25rem;
   padding: 1rem;
+  margin: 1rem;
 `;
 
 const CardTitle = styled.div`

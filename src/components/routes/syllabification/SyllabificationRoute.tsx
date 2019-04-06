@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import { areSyllablesValid, findSyllables, ISyllable } from '../../../api/linguistics/phonology/syllabification';
 import handleKeyDownSubmit from '../../../api/util/handleKeyDownSubmit';
 import Optional from '../../../models/Optional';
+import Card from '../../styled/Card';
 import ErrorCard from '../../styled/ErrorCard';
 import FlatButton from '../../styled/FlatButton';
 import PageTitle from '../../styled/PageTitle';
 import StyledInput from '../../styled/StyledInput';
+import SyllabificationData from './SyllabificationData';
 import SyllabificationTree from './SyllabificationTree';
 
 const SyllabificationContainer = styled.div`
@@ -50,17 +52,16 @@ const SyllabificationRoute: React.FC = () => {
 
     return (
         <SyllabificationContainer>
-            <PageTitle>
-                IPA Syllabification
-            </PageTitle>
-            <InputBox>
-                Input IPA Symbols:
-                <StyledInput value={inputValue} onChange={e => setInputValue(e.target.value)} onKeyDown={handleKeyDownSubmit(onButtonClick)}/>
-            </InputBox>
-            <FlatButton onClick={onButtonClick}>
-                Syllabify
-            </FlatButton>
-            { syllabificationData && (syllabificationData.isValid ? <SyllabificationTree {...syllabificationData} /> : (
+            <Card title="IPA Syllabification">
+                <InputBox>
+                    Input IPA Symbols:
+                    <StyledInput value={inputValue} onChange={e => setInputValue(e.target.value)} onKeyDown={handleKeyDownSubmit(onButtonClick)}/>
+                </InputBox>
+                <FlatButton onClick={onButtonClick}>
+                    Syllabify
+                </FlatButton>
+            </Card>
+            { syllabificationData && (syllabificationData.isValid ? <SyllabificationData {...syllabificationData} /> : (
                 <ErrorCard title="Invalid Input">
                     It appears that your input doesn't produce a valid syllabification.<br/>
                     Please check your input and try again.<br/>

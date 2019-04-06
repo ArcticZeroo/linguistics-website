@@ -10,13 +10,7 @@ const FlatButton = styled.button`
   outline: none;
   border: none;
   min-width: 6rem;
-  box-shadow: 0 0 0.125rem 0.2rem rgba(55, 55, 55, 0.125);
-  transition: box-shadow,background-color 0.25s ease;
-  
-  :hover {
-    box-shadow: 0 0 0.125rem 0.3rem rgba(55, 55, 55, 0.2);
-    background-color: white;
-  }
+  transition: box-shadow 0.25s ease;
 `;
 
 export default FlatButton;

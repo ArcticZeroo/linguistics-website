@@ -27,5 +27,8 @@ export default {
     ipaChart: {
         yAxisLabel: 'Manner of Articulation',
         xAxisLabel: 'Place of Articulation'
+    },
+    css: {
+        googleFontFamily: '"Google Sans", "Product Sans", "Roboto", sans-serif'
     }
 }

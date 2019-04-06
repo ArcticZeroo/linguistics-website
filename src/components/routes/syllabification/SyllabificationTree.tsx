@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import * as React from 'react';
 import { ISyllable } from '../../../api/linguistics/phonology/syllabification';
 import Optional from '../../../models/Optional';
 import Position from '../../../models/Position';
 import Card from '../../styled/Card';
+import { ISyllabificationDataProps } from './SyllabificationData';
 
 const letterWidthInPx = 16;
 const letterSpacingInPx = 16;
@@ -163,12 +164,7 @@ function drawSigmaAndAttachNodes({ canvas, syllable, onsetIndex, nucleusIndex, c
     }
 }
 
-interface ISyllablesDisplayProps {
-    word: string;
-    syllables: ISyllable[];
-}
-
-const SyllabificationTree: React.FC<ISyllablesDisplayProps> = ({ word, syllables }) => {
+const SyllabificationTree: React.FC<ISyllabificationDataProps> = ({ word, syllables }) => {
     const ref = useRef<Optional<HTMLDivElement>>(null);
 
     function writeCanvas(div: HTMLDivElement) {
@@ -244,7 +240,7 @@ const SyllabificationTree: React.FC<ISyllablesDisplayProps> = ({ word, syllables
     }
 
     return (
-        <Card title={`Syllabification tree for ${word}`}>
+        <Card title={`Syllabification tree for "${word}"`}>
             <div ref={writeCanvas} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} />
         </Card>
     );
