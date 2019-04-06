@@ -7,6 +7,7 @@ import consonants, {
 } from '../../../api/linguistics/ipa/consonants';
 import strings from '../../../config/strings';
 import Optional from '../../../models/Optional';
+import SelectOnClick from '../../util/SelectOnClick';
 
 /**
  * Maps unique array values to the indicies they appear in. Pretty much only useful for the place/manner of articulation
@@ -125,10 +126,12 @@ const ConsonantChartBody = () => {
 
                 row.push(
                     <td key={`${mannerOfArticulation}-${placeOfArticulation}-${voicing}`}>
-                        <SoundContainer
-                            title={`${strings.voicing[voicing]} ${strings.placesOfArticulation[placeOfArticulation]} ${strings.mannerOfArticulation[mannerOfArticulation]}`}>
-                            {sound}
-                        </SoundContainer>
+                        <SelectOnClick>
+                            <SoundContainer
+                                title={`${strings.voicing[voicing]} ${strings.placesOfArticulation[placeOfArticulation]} ${strings.mannerOfArticulation[mannerOfArticulation]}`}>
+                                {sound}
+                            </SoundContainer>
+                        </SelectOnClick>
                     </td>
                 );
             }
