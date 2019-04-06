@@ -111,3 +111,7 @@ export function findSyllables(input: string | string[], options: ISyllabificatio
 
     return syllables.reverse();
 }
+
+export function areSyllablesValid(syllables: ISyllable[]): boolean {
+    return syllables.every(syllable => syllable.nucleus.length > 0);
+}
