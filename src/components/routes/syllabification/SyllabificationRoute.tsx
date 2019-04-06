@@ -8,7 +8,7 @@ import ErrorCard from '../../styled/ErrorCard';
 import FlatButton from '../../styled/FlatButton';
 import PageTitle from '../../styled/PageTitle';
 import StyledInput from '../../styled/StyledInput';
-import SyllablesDisplay from './SyllablesDisplay';
+import SyllabificationTree from './SyllabificationTree';
 
 const SyllabificationContainer = styled.div`
   display: flex;
@@ -27,13 +27,6 @@ interface ISyllabificationData {
     syllables: ISyllable[];
     isValid: boolean;
 }
-
-const invalidInputCard = (
-    <ErrorCard title="Invalid Input">
-        It appears that your input doesn't produce a valid syllabification.<br/>
-        Please check your input and try again.
-    </ErrorCard>
-);
 
 const SyllabificationRoute: React.FC = () => {
     const [inputValue, setInputValue] = useState('');
@@ -67,7 +60,13 @@ const SyllabificationRoute: React.FC = () => {
             <FlatButton onClick={onButtonClick}>
                 Syllabify
             </FlatButton>
-            { syllabificationData && (syllabificationData.isValid ? <SyllablesDisplay {...syllabificationData} /> : invalidInputCard) }
+            { syllabificationData && (syllabificationData.isValid ? <SyllabificationTree {...syllabificationData} /> : (
+                <ErrorCard title="Invalid Input">
+                    It appears that your input doesn't produce a valid syllabification.<br/>
+                    Please check your input and try again.<br/>
+                    You entered: {syllabificationData.word}
+                </ErrorCard>
+            )) }
         </SyllabificationContainer>
     );
 };

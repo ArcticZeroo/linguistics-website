@@ -3,10 +3,11 @@ import * as React from 'react';
 import { ISyllable } from '../../../api/linguistics/phonology/syllabification';
 import Optional from '../../../models/Optional';
 import Position from '../../../models/Position';
+import Card from '../../styled/Card';
 
 const letterWidthInPx = 16;
 const letterSpacingInPx = 16;
-const canvasHeightInPx = 256;
+const canvasHeightInPx = 180;
 const spaceBelowIdentifiersInPx = 4;
 const relationLineOffsetInPx = 6;
 const letterXOffsetInPx = 2;
@@ -19,7 +20,7 @@ const labelHeightMultipliers = {
     syllable: 5
 };
 
-const fontFamily = 'Arial';
+const fontFamily = '"Google Sans", "Product Sans", "Roboto", sans-serif';
 
 const syllableIdentifiers = {
     sigma: 'σ',
@@ -117,13 +118,14 @@ function drawTypeRelations({ canvas, identifier, elements, startIndex }: ITypeRe
 
 interface ISyllableIdentifierParams {
     canvas: HTMLCanvasElement;
+    syllable: ISyllable;
     onsetIndex: number;
     nucleusIndex: number;
     codaIndex: number;
     isRhyme: boolean;
 }
 
-function drawSigmaAndAttachNodes({ canvas, onsetIndex, nucleusIndex, codaIndex, isRhyme }: ISyllableIdentifierParams) {
+function drawSigmaAndAttachNodes({ canvas, syllable, onsetIndex, nucleusIndex, codaIndex, isRhyme }: ISyllableIdentifierParams) {
     const typePositionOffset = { x: relationLineOffsetInPx, y: -letterSpacingInPx };
     const sigmaRhymePositionOffset = { x: relationLineOffsetInPx, y: relationLineOffsetInPx };
 
@@ -145,18 +147,18 @@ function drawSigmaAndAttachNodes({ canvas, onsetIndex, nucleusIndex, codaIndex, 
         drawLine(canvas, nucleusPosition, rhymeBottomPosition);
         drawLine(canvas, { x: rhymeBottomPosition.x, y: rhymeBottomPosition.y - letterWidthInPx - relationLineOffsetInPx }, sigmaPosition);
 
-        if (codaIndex !== nucleusIndex) {
+        if (syllable.coda.length) {
             drawLine(canvas, codaPosition, rhymeBottomPosition);
         }
     } else {
         drawLine(canvas, nucleusPosition, sigmaPosition);
 
-        if (codaIndex !== nucleusIndex) {
+        if (syllable.coda.length) {
             drawLine(canvas, codaPosition, sigmaPosition);
         }
     }
 
-    if (onsetIndex !== nucleusIndex) {
+    if (syllable.onset.length) {
         drawLine(canvas, onsetPosition, sigmaPosition);
     }
 }
@@ -166,7 +168,7 @@ interface ISyllablesDisplayProps {
     syllables: ISyllable[];
 }
 
-const SyllablesDisplay: React.FC<ISyllablesDisplayProps> = ({ word, syllables }) => {
+const SyllabificationTree: React.FC<ISyllablesDisplayProps> = ({ word, syllables }) => {
     const ref = useRef<Optional<HTMLDivElement>>(null);
 
     function writeCanvas(div: HTMLDivElement) {
@@ -205,7 +207,7 @@ const SyllablesDisplay: React.FC<ISyllablesDisplayProps> = ({ word, syllables })
 
             const onsetIndex = syllableStartIndex;
             const nucleusIndex = syllableStartIndex + syllable.onset.length;
-            const codaIndex = nucleusIndex + syllable.coda.length;
+            const codaIndex = nucleusIndex + syllable.nucleus.length;
 
             const typeRelations: Array<[number, string]> = [
                 [onsetIndex, 'onset'],
@@ -222,7 +224,7 @@ const SyllablesDisplay: React.FC<ISyllablesDisplayProps> = ({ word, syllables })
                 });
             }
 
-            i = codaIndex + 1;
+            i = syllable.coda.length ? codaIndex + 1 : codaIndex;
 
             const isRhyme = i >= word.length;
 
@@ -233,7 +235,8 @@ const SyllablesDisplay: React.FC<ISyllablesDisplayProps> = ({ word, syllables })
                 onsetIndex,
                 nucleusIndex,
                 codaIndex,
-                isRhyme
+                isRhyme,
+                syllable
             });
         }
 
@@ -241,8 +244,10 @@ const SyllablesDisplay: React.FC<ISyllablesDisplayProps> = ({ word, syllables })
     }
 
     return (
-        <div ref={writeCanvas}/>
+        <Card title={`Syllabification tree for ${word}`}>
+            <div ref={writeCanvas} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} />
+        </Card>
     );
 };
 
-export default SyllablesDisplay;
+export default SyllabificationTree;
