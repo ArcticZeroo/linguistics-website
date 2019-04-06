@@ -34,7 +34,7 @@ const SyllabificationRoute: React.FC = () => {
                 Identified symbols:
                 <StyledInput readOnly={true} value={splitIpaIntoSymbols(inputValue)}/>
             </InputBox>
-            <FlatButton>
+            <FlatButton onClick={() => console.log('Clicked')}>
                 Submit
             </FlatButton>
         </SyllabificationContainer>
