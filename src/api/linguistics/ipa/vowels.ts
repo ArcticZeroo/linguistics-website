@@ -44,9 +44,57 @@ const vowels: { [symbol: string]: IVowelData } = {
         isRounded: false,
         isTense: false
     },
+    'ɨ': {
+        frontBackness: TongueFrontBackness.central,
+        height: TongueHeight.high,
+        isRounded: false,
+        isTense: false
+    },
     'ə': {
+        frontBackness: TongueFrontBackness.central,
+        height: TongueHeight.mid,
+        isRounded: false,
+        isTense: false
+    },
+    'a': {
+        frontBackness: TongueFrontBackness.central,
+        height: TongueHeight.low,
+        isRounded: false,
+        isTense: false
+    },
+    'u': {
+        frontBackness: TongueFrontBackness.back,
+        height: TongueHeight.high,
+        isRounded: true,
+        isTense: true
+    },
+    'ʊ': {
+        frontBackness: TongueFrontBackness.back,
+        height: TongueHeight.high,
+        isRounded: true,
+        isTense: false
+    },
+    'o': {
         frontBackness: TongueFrontBackness.back,
         height: TongueHeight.mid,
+        isRounded: true,
+        isTense: true
+    },
+    'ɔ': {
+        frontBackness: TongueFrontBackness.back,
+        height: TongueHeight.mid,
+        isRounded: true,
+        isTense: false
+    },
+    'ʌ': {
+        frontBackness: TongueFrontBackness.back,
+        height: TongueHeight.mid,
+        isRounded: false,
+        isTense: false
+    },
+    'ɑ': {
+        frontBackness: TongueFrontBackness.back,
+        height: TongueHeight.low,
         isRounded: false,
         isTense: false
     }

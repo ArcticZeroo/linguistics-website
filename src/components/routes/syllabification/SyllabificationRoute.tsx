@@ -19,7 +19,7 @@ const SyllabificationContainer = styled.div`
   flex-direction: column;
 `;
 
-const InputBox = styled.div`
+const CardInfoContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -62,7 +62,7 @@ const SyllabificationRoute: React.FC = () => {
     return (
         <SyllabificationContainer>
             <Card title="IPA Syllabification">
-                <InputBox>
+                <CardInfoContainer>
                     <InputLabel>
                         Input IPA Symbols
                     </InputLabel>
@@ -72,7 +72,7 @@ const SyllabificationRoute: React.FC = () => {
                         onKeyDown={handleKeyDownSubmit(onButtonClick)}
                         required={true}
                     />
-                </InputBox>
+                </CardInfoContainer>
                 <ButtonContainer>
                     <FlatButton onClick={onButtonClick}>
                         Syllabify
