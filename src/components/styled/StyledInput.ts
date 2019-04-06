@@ -4,6 +4,7 @@ const StyledInput = styled.input`
   padding: 0.5rem;
   border: none;
   border-radius: 0.25rem;
+  background: #EEE;
 `;
 
 export default StyledInput;

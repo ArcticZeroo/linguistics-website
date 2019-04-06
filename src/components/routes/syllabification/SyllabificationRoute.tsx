@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { areSyllablesValid, findSyllables, ISyllable } from '../../../api/linguistics/phonology/syllabification';
 import handleKeyDownSubmit from '../../../api/util/handleKeyDownSubmit';
+import strings from '../../../config/strings';
 import Optional from '../../../models/Optional';
 import Card from '../../styled/Card';
 import ErrorCard from '../../styled/ErrorCard';
@@ -20,8 +21,16 @@ const SyllabificationContainer = styled.div`
 
 const InputBox = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+  flex-direction: column;
+`;
+
+const InputLabel = styled.label`
+  font-family: ${strings.css.googleFontFamily};
+`;
+
+const ButtonContainer = styled.div`
+  margin-top: 1rem;
 `;
 
 interface ISyllabificationData {
@@ -37,7 +46,7 @@ const SyllabificationRoute: React.FC = () => {
     const syllabificationSettings = { maximumConsecutiveStops: 1 };
 
     function onButtonClick() {
-        if (syllabificationData && syllabificationData.word === inputValue) {
+        if (!inputValue.trim() || syllabificationData && syllabificationData.word === inputValue) {
             return;
         }
 
@@ -54,12 +63,21 @@ const SyllabificationRoute: React.FC = () => {
         <SyllabificationContainer>
             <Card title="IPA Syllabification">
                 <InputBox>
-                    Input IPA Symbols:
-                    <StyledInput value={inputValue} onChange={e => setInputValue(e.target.value)} onKeyDown={handleKeyDownSubmit(onButtonClick)}/>
+                    <InputLabel>
+                        Input IPA Symbols
+                    </InputLabel>
+                    <StyledInput
+                        value={inputValue}
+                        onChange={e => setInputValue(e.target.value)}
+                        onKeyDown={handleKeyDownSubmit(onButtonClick)}
+                        required={true}
+                    />
                 </InputBox>
-                <FlatButton onClick={onButtonClick}>
-                    Syllabify
-                </FlatButton>
+                <ButtonContainer>
+                    <FlatButton onClick={onButtonClick}>
+                        Syllabify
+                    </FlatButton>
+                </ButtonContainer>
             </Card>
             { syllabificationData && (syllabificationData.isValid ? <SyllabificationData {...syllabificationData} /> : (
                 <ErrorCard title="Invalid Input">

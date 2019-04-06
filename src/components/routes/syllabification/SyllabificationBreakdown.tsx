@@ -24,7 +24,7 @@ const SyllableChunkElements = styled.div`
 `;
 const SyllableTypeElements = styled.div``;
 
-const syllableTypes = ['coda', 'nucleus', 'onset'];
+const syllableTypes = ['onset', 'nucleus', 'coda'];
 
 const SyllabificationBreakdown: React.FC<ISyllabificationDataProps> = ({ word, syllables }) => {
     function buildTypeElements(syllable: ISyllable, i: number) {

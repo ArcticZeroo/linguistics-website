@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const CardContainer = styled.div`
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   padding: 1rem;
   margin: 1rem;
 `;
