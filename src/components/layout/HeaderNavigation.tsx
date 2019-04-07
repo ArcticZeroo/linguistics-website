@@ -11,7 +11,7 @@ const RouteLinksContainer = styled.div`
     margin-top: 0.5rem;
 
     a {
-        color: #CCC;
+        color: #DDD;
         text-decoration: none;
         padding: 0.75rem;
         transition: color 0.25s ease;
