@@ -1,9 +1,8 @@
-import { useRef } from 'react';
 import * as React from 'react';
+import { splitIpaIntoSymbols } from '../../../api/linguistics/ipa/util';
 import { ISyllable } from '../../../api/linguistics/phonology/syllabification';
 import { drawLine } from '../../../api/util/CanvasUtil';
 import CanvasContainer from '../../../api/util/CanvasContainer';
-import Optional from '../../../models/Optional';
 import Position from '../../../models/Position';
 import Card from '../../styled/Card';
 import { ISyllabificationDataProps } from './SyllabificationData';
@@ -157,8 +156,13 @@ function drawWord(canvas: HTMLCanvasElement, word: string) {
 
     ctx.font = `${letterWidthInPx}px ${fontFamily}`;
 
-    for (let i = 0; i < word.length; ++i) {
-        ctx.fillText(word[i], getLetterOffset(i) + letterXOffsetInPx, letterDrawHeight);
+    const symbols = splitIpaIntoSymbols(word);
+
+    for (let i = 0; i < symbols.length; ++i) {
+        const letterOffset = getLetterOffset(i);
+        const xOffset = symbols[i].length > 1 ? -letterXOffsetInPx : letterXOffsetInPx;
+
+        ctx.fillText(symbols[i], letterOffset + xOffset, letterDrawHeight);
     }
 }
 
