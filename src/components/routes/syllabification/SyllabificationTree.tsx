@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import * as React from 'react';
 import { ISyllable } from '../../../api/linguistics/phonology/syllabification';
+import { drawLine } from '../../../api/util/CanvasUtil';
 import useCanvas from '../../../api/util/useCanvas';
 import Optional from '../../../models/Optional';
 import Position from '../../../models/Position';
@@ -61,19 +62,6 @@ function getLetterOffset(i: number) {
 
 function getBottomOffset(i: number) {
     return canvasHeightInPx - getOffset(i);
-}
-
-function drawLine(canvas: HTMLCanvasElement, from: Position, to: Position) {
-    const ctx = canvas.getContext('2d');
-
-    if (!ctx) {
-        return;
-    }
-
-    ctx.beginPath();
-    ctx.moveTo(from.x, from.y);
-    ctx.lineTo(to.x, to.y);
-    ctx.stroke();
 }
 
 function getIdentifierPosition(startIndex: number, offset: Position = { x: 0, y: 0 }): Position {

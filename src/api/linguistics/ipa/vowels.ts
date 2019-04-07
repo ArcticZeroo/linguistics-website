@@ -6,98 +6,115 @@ enum TongueHeight {
     high, mid, low
 }
 
+enum Rounding {
+    rounded,
+    unrounded
+}
+
+enum Tenseness {
+    tense,
+    lax
+}
+
 interface IVowelData {
     frontBackness: TongueFrontBackness;
     height: TongueHeight;
-    isRounded: boolean;
-    isTense: boolean;
+    rounding: Rounding;
+    tenseness: Tenseness;
 }
 
 const vowels: { [symbol: string]: IVowelData } = {
     'i': {
         frontBackness: TongueFrontBackness.front,
         height: TongueHeight.high,
-        isRounded: false,
-        isTense: true
+        rounding: Rounding.unrounded,
+        tenseness: Tenseness.tense
     },
     'y': {
         frontBackness: TongueFrontBackness.front,
         height: TongueHeight.high,
-        isRounded: true,
-        isTense: true
+        rounding: Rounding.rounded,
+        tenseness: Tenseness.tense
     },
     'I': {
         frontBackness: TongueFrontBackness.front,
         height: TongueHeight.high,
-        isRounded: false,
-        isTense: false
+        rounding: Rounding.unrounded,
+        tenseness: Tenseness.lax
+    },
+    'e': {
+        frontBackness: TongueFrontBackness.front,
+        height: TongueHeight.mid,
+        rounding: Rounding.unrounded,
+        tenseness: Tenseness.tense
     },
     'ɛ': {
         frontBackness: TongueFrontBackness.front,
         height: TongueHeight.mid,
-        isRounded: false,
-        isTense: false
+        rounding: Rounding.unrounded,
+        tenseness: Tenseness.lax
     },
     'æ': {
         frontBackness: TongueFrontBackness.front,
         height: TongueHeight.low,
-        isRounded: false,
-        isTense: false
+        rounding: Rounding.unrounded,
+        tenseness: Tenseness.lax
     },
     'ɨ': {
         frontBackness: TongueFrontBackness.central,
         height: TongueHeight.high,
-        isRounded: false,
-        isTense: false
+        rounding: Rounding.unrounded,
+        tenseness: Tenseness.lax
     },
     'ə': {
         frontBackness: TongueFrontBackness.central,
         height: TongueHeight.mid,
-        isRounded: false,
-        isTense: false
+        rounding: Rounding.unrounded,
+        tenseness: Tenseness.lax
     },
     'a': {
         frontBackness: TongueFrontBackness.central,
         height: TongueHeight.low,
-        isRounded: false,
-        isTense: false
+        rounding: Rounding.unrounded,
+        tenseness: Tenseness.lax
     },
     'u': {
         frontBackness: TongueFrontBackness.back,
         height: TongueHeight.high,
-        isRounded: true,
-        isTense: true
+        rounding: Rounding.rounded,
+        tenseness: Tenseness.tense
     },
     'ʊ': {
         frontBackness: TongueFrontBackness.back,
         height: TongueHeight.high,
-        isRounded: true,
-        isTense: false
+        rounding: Rounding.rounded,
+        tenseness: Tenseness.lax
     },
     'o': {
         frontBackness: TongueFrontBackness.back,
         height: TongueHeight.mid,
-        isRounded: true,
-        isTense: true
+        rounding: Rounding.rounded,
+        tenseness: Tenseness.tense
     },
     'ɔ': {
         frontBackness: TongueFrontBackness.back,
         height: TongueHeight.mid,
-        isRounded: true,
-        isTense: false
+        rounding: Rounding.rounded,
+        tenseness: Tenseness.lax
     },
     'ʌ': {
         frontBackness: TongueFrontBackness.back,
         height: TongueHeight.mid,
-        isRounded: false,
-        isTense: false
+        rounding: Rounding.unrounded,
+        tenseness: Tenseness.lax
     },
     'ɑ': {
         frontBackness: TongueFrontBackness.back,
         height: TongueHeight.low,
-        isRounded: false,
-        isTense: false
+        rounding: Rounding.unrounded,
+        tenseness: Tenseness.lax
     }
 };
 
+export { TongueFrontBackness, TongueHeight, Tenseness, Rounding };
 export default vowels;

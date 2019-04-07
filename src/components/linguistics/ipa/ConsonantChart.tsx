@@ -63,10 +63,8 @@ const SoundContainer = styled.div`
 `;
 
 const TableComponent = styled.table`
-  background: #FAFAFA;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
   display: inline-block;
+  margin: 1rem;
 `;
 
 const RowLabel = styled.td`

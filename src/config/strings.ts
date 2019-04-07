@@ -1,4 +1,5 @@
 import { MannerOfArticulation, PlaceOfArticulation, Voicing } from '../api/linguistics/ipa/consonants';
+import { Rounding, Tenseness, TongueFrontBackness, TongueHeight } from '../api/linguistics/ipa/vowels';
 export default {
     siteName: 'Test Title',
     placesOfArticulation: {
@@ -24,11 +25,31 @@ export default {
         [Voicing.voiceless]: 'Voiceless',
         [Voicing.voiced]: 'Voiced'
     },
-    ipaChart: {
-        yAxisLabel: 'Manner of Articulation',
-        xAxisLabel: 'Place of Articulation'
-    },
     css: {
         googleFontFamily: '"Google Sans", "Product Sans", "Roboto", sans-serif'
+    },
+    tongueFrontBackness: {
+        [TongueFrontBackness.front]: 'Front',
+        [TongueFrontBackness.central]: 'Central',
+        [TongueFrontBackness.back]: 'Back'
+    },
+    tongueHeight: {
+        [TongueHeight.high]: 'High',
+        [TongueHeight.mid]: 'Mid',
+        [TongueHeight.low]: 'Low'
+    },
+    rounding: {
+        [Rounding.rounded]: 'Rounded',
+        [Rounding.unrounded]: 'Unrounded'
+    },
+    tenseness: {
+        [Tenseness.tense]: 'Tense',
+        [Tenseness.lax]: 'Lax'
+    },
+    vowelChart: {
+        vowelTitle: 'Vowel'
+    },
+    ipaCharts: {
+        title: 'IPA Charts (Click sounds to select)'
     }
 }
