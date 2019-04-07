@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import * as React from 'react';
 import { ISyllable } from '../../../api/linguistics/phonology/syllabification';
 import { drawLine } from '../../../api/util/CanvasUtil';
-import useCanvas from '../../../api/util/useCanvas';
+import CanvasContainer from '../../../api/util/CanvasContainer';
 import Optional from '../../../models/Optional';
 import Position from '../../../models/Position';
 import Card from '../../styled/Card';
@@ -163,8 +163,6 @@ function drawWord(canvas: HTMLCanvasElement, word: string) {
 }
 
 const SyllabificationTree: React.FC<ISyllabificationDataProps> = ({ word, syllables }) => {
-    const canvasContainer = useCanvas(writeCanvas, canvasContainerProps);
-
     function writeCanvas(canvas: HTMLCanvasElement) {
         canvas.width = (word.length * (letterWidthInPx + letterSpacingInPx));
         canvas.height = canvasHeightInPx;
@@ -213,7 +211,7 @@ const SyllabificationTree: React.FC<ISyllabificationDataProps> = ({ word, syllab
 
     return (
         <Card title={`Syllabification tree for "${word}"`}>
-            {canvasContainer}
+            <CanvasContainer onCanvasCreate={writeCanvas} divProps={canvasContainerProps} />
         </Card>
     );
 };

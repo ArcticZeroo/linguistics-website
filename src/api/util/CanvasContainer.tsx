@@ -7,7 +7,12 @@ function clearContents(element: HTMLElement) {
     }
 }
 
-export default function useCanvas(onCanvasCreate: (canvas: HTMLCanvasElement) => void, divProps: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> = {}) {
+interface ICanvasContainerProps {
+    onCanvasCreate: (canvas: HTMLCanvasElement) => void;
+    divProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+}
+
+const CanvasContainer: React.FC<ICanvasContainerProps> = ({ onCanvasCreate, divProps = {} }) => {
     function onRefUpdate(div: Optional<HTMLDivElement>) {
         if (!div) {
             return;
@@ -25,4 +30,6 @@ export default function useCanvas(onCanvasCreate: (canvas: HTMLCanvasElement) =>
     return (
         <div {...divProps} ref={onRefUpdate} />
     );
-}
+};
+
+export default CanvasContainer;
