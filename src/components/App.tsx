@@ -6,7 +6,6 @@ import PageContent from './layout/PageContent';
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background: #007d87;
   height: calc(100% - 2rem);
   padding: 1rem;
 `;

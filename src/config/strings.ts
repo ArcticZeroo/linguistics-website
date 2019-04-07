@@ -1,7 +1,9 @@
 import { MannerOfArticulation, PlaceOfArticulation, Voicing } from '../api/linguistics/ipa/consonants';
 import { Rounding, Tenseness, TongueFrontBackness, TongueHeight } from '../api/linguistics/ipa/vowels';
+import { Distribution } from '../api/linguistics/phonology/environment';
+
 export default {
-    siteName: 'Test Title',
+    siteName: 'Linguistic Analysis',
     placesOfArticulation: {
         [PlaceOfArticulation.bilabial]: 'Bilabial',
         [PlaceOfArticulation.labiodental]: 'Labio-Dental',
@@ -53,10 +55,21 @@ export default {
         title: 'IPA Charts (Click sounds to select)'
     },
     phoneticEnvironment: {
+        title: 'Phonetic Environment Analysis',
+        wordsLabel: 'Enter words (as IPA symbols) to search in',
+        symbolsLabel: 'Enter IPA symbols to search for (separate by commas or spaces)',
+        analyzeButtonText: 'Analyze Environment',
         noSymbols: 'No valid symbols were found in your input.',
-        emptyString: 'Empty strings are not allowed as inputs.'
+        emptyString: 'All of your inputs appear to be empty.',
+        tables: {
+            title: 'Environment Tables'
+        }
     },
     validation: {
         invalidInput: 'Invalid Input'
+    },
+    distribution: {
+        [Distribution.overlapping]: 'Overlapping',
+        [Distribution.complementary]: 'Complementary'
     }
 }

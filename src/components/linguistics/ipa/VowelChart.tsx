@@ -171,10 +171,13 @@ const VowelChartBody = () => {
         ].join(' ');
 
         elements.push(
-            <ChartSymbols title={name} style={{
-                left: position.x,
-                top: position.y
-            }}>
+            <ChartSymbols title={name}
+                          style={{
+                              left: position.x,
+                              top: position.y
+                          }}
+                          key={name}
+            >
                 <SelectOnClick>
                     {vowel}
                 </SelectOnClick>

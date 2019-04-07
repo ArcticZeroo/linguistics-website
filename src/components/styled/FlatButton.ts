@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import strings from '../../config/strings';
 
 const FlatButton = styled.button`
   padding: 0.5rem;
@@ -10,6 +11,7 @@ const FlatButton = styled.button`
   border: none;
   min-width: 6rem;
   transition: box-shadow 0.25s ease;
+  font-family: ${strings.css.googleFontFamily};
 `;
 
 export default FlatButton;

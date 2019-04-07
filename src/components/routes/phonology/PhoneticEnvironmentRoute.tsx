@@ -2,6 +2,7 @@ import { useState } from 'react';
 import * as React from 'react';
 import styled from 'styled-components';
 import { isKnownIpaSymbol, splitIpaIntoSymbols } from '../../../api/linguistics/ipa/util';
+import { IEnvironmentParams } from '../../../api/linguistics/phonology/environment';
 import strings from '../../../config/strings';
 import Optional from '../../../models/Optional';
 import InfiniteInputs, { IInputData } from '../../input/infinite/InfiniteInputs';
@@ -10,6 +11,7 @@ import ErrorCard from '../../styled/ErrorCard';
 import FlatButton from '../../styled/FlatButton';
 import FlexCenteredColumn from '../../styled/FlexCenteredColumn';
 import StyledInput, { maxWidthStyle } from '../../styled/StyledInput';
+import PhoneticEnvironmentData from './PhoneticEnvironmentData';
 
 const InputContainer = styled.div`
   display: flex;
@@ -47,7 +49,7 @@ function splitSymbols(source: string) {
     return symbols;
 }
 
-function getValidationError(data: Optional<IEnvironmentData>): Optional<string> {
+function getValidationError(data: Optional<IEnvironmentParams>): Optional<string> {
     if (!data) {
         return null;
     }
@@ -58,26 +60,21 @@ function getValidationError(data: Optional<IEnvironmentData>): Optional<string> 
         return strings.phoneticEnvironment.noSymbols;
     }
 
-    if (sources.length === 0 || !sources.every(s => !!s.trim())) {
+    if (sources.length === 0) {
         return strings.phoneticEnvironment.emptyString;
     }
-}
-
-interface IEnvironmentData {
-    sources: string[];
-    symbols: string[];
 }
 
 const PhoneticEnvironmentRoute: React.FC = () => {
     const [inputData, setInputData] = useState<IInputData>({ currentId: 1, values: { 0: '' } });
     const [symbolValue, setSymbolValue] = useState('');
-    const [environmentData, setEnvironmentData] = useState<Optional<IEnvironmentData>>(null);
+    const [environmentParams, setEnvironmentParams] = useState<Optional<IEnvironmentParams>>(null);
 
     function onAnalyzeButtonPress() {
-        const sources: string[] = Array.from(new Set(Object.values(inputData.values)));
+        const sources: string[] = Array.from(new Set(Object.values(inputData.values))).filter(str => !!str.trim());
         const symbols = Array.from(splitSymbols(symbolValue));
 
-        setEnvironmentData({
+        setEnvironmentParams({
             sources,
             symbols
         });
@@ -90,13 +87,15 @@ const PhoneticEnvironmentRoute: React.FC = () => {
         }
     }
 
-    const validationError = getValidationError(environmentData);
+    const validationError = getValidationError(environmentParams);
 
     return (
         <FlexCenteredColumn>
-            <Card title={'Phonetic Environment'}>
+            <Card title={strings.phoneticEnvironment.title}>
                 <InputContainer>
-                    Words to find the phonetic environment in:
+                    <label>
+                        {strings.phoneticEnvironment.wordsLabel}
+                    </label>
                     <InfiniteInputs addButtonText={'Add Word'}
                                     onDataChange={setInputData}
                                     inputData={inputData}
@@ -105,7 +104,9 @@ const PhoneticEnvironmentRoute: React.FC = () => {
                 </InputContainer>
 
                 <InputContainer>
-                    Symbols to search for (separate by commas or spaces)
+                    <label>
+                        {strings.phoneticEnvironment.symbolsLabel}
+                    </label>
                     <StyledInput style={maxWidthStyle}
                                  onChange={e => setSymbolValue(e.target.value)}
                                  value={symbolValue}
@@ -114,7 +115,7 @@ const PhoneticEnvironmentRoute: React.FC = () => {
                 </InputContainer>
 
                 <FlatButton onClick={onAnalyzeButtonPress}>
-                    Analyze Environment
+                    {strings.phoneticEnvironment.analyzeButtonText}
                 </FlatButton>
             </Card>
             {
@@ -123,6 +124,9 @@ const PhoneticEnvironmentRoute: React.FC = () => {
                         {validationError}
                     </ErrorCard>
                 )
+            }
+            {
+                !validationError && environmentParams && <PhoneticEnvironmentData environmentParams={environmentParams} />
             }
         </FlexCenteredColumn>
     );

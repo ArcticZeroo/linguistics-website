@@ -67,6 +67,7 @@ const InfiniteInputs: React.FC<IInfiniteInputsProps> = ({ addButtonText, onDataC
                     onDelete={onInputDelete}
                     value={inputData.values[id]}
                     onKeyDown={onInputKeyDown}
+                    key={`infinite-input-${id}`}
                 />
             );
         }
