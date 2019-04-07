@@ -7,4 +7,7 @@ const StyledInput = styled.input`
   background: #DDD;
 `;
 
+const maxWidthStyle = { width: 'calc(100% - 1rem)' };
+
+export { maxWidthStyle };
 export default StyledInput;

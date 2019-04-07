@@ -8,16 +8,11 @@ import Optional from '../../../models/Optional';
 import Card from '../../styled/Card';
 import ErrorCard from '../../styled/ErrorCard';
 import FlatButton from '../../styled/FlatButton';
+import FlexCenteredColumn from '../../styled/FlexCenteredColumn';
 import PageTitle from '../../styled/PageTitle';
 import StyledInput from '../../styled/StyledInput';
 import SyllabificationData from './SyllabificationData';
 import SyllabificationTree from './SyllabificationTree';
-
-const SyllabificationContainer = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`;
 
 const CardInfoContainer = styled.div`
   display: flex;
@@ -60,7 +55,7 @@ const SyllabificationRoute: React.FC = () => {
     }
 
     return (
-        <SyllabificationContainer>
+        <FlexCenteredColumn>
             <Card title="IPA Syllabification">
                 <CardInfoContainer>
                     <InputLabel>
@@ -86,7 +81,7 @@ const SyllabificationRoute: React.FC = () => {
                     You entered: {syllabificationData.word}
                 </ErrorCard>
             )) }
-        </SyllabificationContainer>
+        </FlexCenteredColumn>
     );
 };
 

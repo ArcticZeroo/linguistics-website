@@ -51,5 +51,12 @@ export default {
     },
     ipaCharts: {
         title: 'IPA Charts (Click sounds to select)'
+    },
+    phoneticEnvironment: {
+        noSymbols: 'No valid symbols were found in your input.',
+        emptyString: 'Empty strings are not allowed as inputs.'
+    },
+    validation: {
+        invalidInput: 'Invalid Input'
     }
 }

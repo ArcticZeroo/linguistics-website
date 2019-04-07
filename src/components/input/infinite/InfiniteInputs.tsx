@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import * as React from 'react';
 import AddButton from '../../styled/AddButton';
 import InfiniteInputEntry from './InfiniteInputEntry';
@@ -10,23 +9,23 @@ export interface IInputData {
 
 interface IInfiniteInputsProps {
     addButtonText: string;
-    onValuesChange(values: string[]): void;
+    onDataChange(data: IInputData): void;
+    inputData: IInputData;
+    onInputKeyDown?(event: React.KeyboardEvent<HTMLInputElement>): void;
 }
 
-const InfiniteInputs: React.FC<IInfiniteInputsProps> = ({ addButtonText }) => {
-    const [inputData, setInputData] = useState<IInputData>({ currentId: 1, values: { 0: '' } });
-
+const InfiniteInputs: React.FC<IInfiniteInputsProps> = ({ addButtonText, onDataChange, inputData, onInputKeyDown }) => {
     function onAddInputClick() {
         const nextId = inputData.currentId;
 
-        setInputData({
+        onDataChange({
             currentId: nextId + 1,
             values: { ...inputData.values, [nextId]: '' }
         });
     }
 
     function onInputChange(id: number, value: string) {
-        setInputData({
+        onDataChange({
             currentId: inputData.currentId,
             values: { ...inputData.values, [id]: value }
         });
@@ -34,6 +33,10 @@ const InfiniteInputs: React.FC<IInfiniteInputsProps> = ({ addButtonText }) => {
 
     function onInputDelete(id: number) {
         if (Object.keys(inputData.values).length === 1) {
+            onDataChange({
+                currentId: inputData.currentId,
+                values: { ...inputData.values, [id]: '' }
+            });
             return;
         }
 
@@ -41,7 +44,7 @@ const InfiniteInputs: React.FC<IInfiniteInputsProps> = ({ addButtonText }) => {
 
         delete copyInput[id];
 
-        setInputData({
+        onDataChange({
             currentId: inputData.currentId,
             values: copyInput
         });
@@ -63,6 +66,7 @@ const InfiniteInputs: React.FC<IInfiniteInputsProps> = ({ addButtonText }) => {
                     onChange={onInputChange}
                     onDelete={onInputDelete}
                     value={inputData.values[id]}
+                    onKeyDown={onInputKeyDown}
                 />
             );
         }

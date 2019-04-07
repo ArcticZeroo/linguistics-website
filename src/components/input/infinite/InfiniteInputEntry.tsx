@@ -8,6 +8,7 @@ const InputContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   padding-bottom: 0.5rem;
+  width: 100%;
 `;
 
 const DeleteButton = styled.div`
@@ -24,12 +25,17 @@ interface IInfiniteInputEntryProps {
     value: string;
     onDelete(id: number): void;
     onChange(id: number, value: string): void;
+    onKeyDown?(event: React.KeyboardEvent<HTMLInputElement>): void;
 }
 
-const InfiniteInputEntry: React.FC<IInfiniteInputEntryProps> = ({ id, value, onDelete, onChange }) => {
+const InfiniteInputEntry: React.FC<IInfiniteInputEntryProps> = ({ id, value, onDelete, onChange, onKeyDown }) => {
     return (
         <InputContainer>
-            <StyledInput value={value} onChange={e => onChange(id, e.target.value)} style={{ width: '100%' }} />
+            <StyledInput value={value}
+                         onChange={e => onChange(id, e.target.value)}
+                         style={{ width: '100%' }}
+                         onKeyDown={onKeyDown}
+            />
             <DeleteButton onClick={() => onDelete(id)}>
                 <MaterialIcon icon="delete" />
             </DeleteButton>

@@ -1,4 +1,5 @@
 import consonants from './consonants';
+import vowels from './vowels';
 
 export function splitIpaIntoSymbols(source: string): string[] {
     const symbols = [];
@@ -24,4 +25,8 @@ export function splitIpaIntoSymbols(source: string): string[] {
 
 export function normalizeSymbols(source: string): string {
     return source.replace(/[r]/g, 'ɹ');
+}
+
+export function isKnownIpaSymbol(source: string): boolean {
+    return consonants.hasOwnProperty(source) || vowels.hasOwnProperty(source);
 }
