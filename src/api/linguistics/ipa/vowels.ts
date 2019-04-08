@@ -116,5 +116,7 @@ const vowels: { [symbol: string]: IVowelData } = {
     }
 };
 
-export { TongueFrontBackness, TongueHeight, Tenseness, Rounding };
+const isVowel = (source: string) => vowels.hasOwnProperty(source);
+
+export { TongueFrontBackness, TongueHeight, Tenseness, Rounding, isVowel };
 export default vowels;

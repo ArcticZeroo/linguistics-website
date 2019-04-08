@@ -11,13 +11,8 @@ export interface IEnvironmentParams {
     symbols: string[];
 }
 
-export interface IDistributionInformation {
-    distribution: Distribution;
-    minimalPairs?: string[];
-}
-
-type EnvironmentMap = { [symbol: string]: { [symbol: string]: boolean } };
-export type EnvironmentDataMap = { [symbol: string]: IEnvironmentData };
+export type EnvironmentMap = { [symbol: string]: { [symbol: string]: boolean } };
+export type EnvironmentSymbolsDataMap = { [symbol: string]: IEnvironmentData };
 
 // Use this for processed params, no knowledge of original sources/symbols is known here
 export interface IEnvironmentData {
@@ -35,7 +30,7 @@ function getEnvironmentIdentifier(symbols: string[], index: number) {
     return symbols[index];
 }
 
-export function findEnvironments({ sources, symbols }: IEnvironmentParams): EnvironmentDataMap {
+export function findEnvironments({ sources, symbols }: IEnvironmentParams): EnvironmentSymbolsDataMap {
     const dataMap = {};
 
     for (const symbol of symbols) {
@@ -82,24 +77,6 @@ function findSideDistribution(dataA: EnvironmentMap, dataB: EnvironmentMap) {
     }
 
     return Distribution.complementary;
-}
-
-export function findMinimalPairs(dataA: IEnvironmentData, dataB: IEnvironmentData): { [left: string]: string[] } {
-    const minimalPairs = {};
-
-    for (const symbolLeft of Object.keys(dataA.leftToRight)) {
-        for (const symbolRight of Object.keys(dataA.leftToRight[symbolLeft])) {
-            if (dataB.leftToRight[symbolLeft] && dataB.leftToRight[symbolLeft][symbolRight]) {
-                if (!minimalPairs[symbolLeft]) {
-                   minimalPairs[symbolLeft] = [];
-                }
-
-                minimalPairs[symbolLeft].push(symbolRight);
-            }
-        }
-    }
-
-    return minimalPairs;
 }
 
 export function findPairDistribution(dataA: IEnvironmentData, dataB: IEnvironmentData) {

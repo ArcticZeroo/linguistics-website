@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {
     Distribution,
-    EnvironmentDataMap,
+    EnvironmentSymbolsDataMap,
     findPairDistribution,
     IEnvironmentParams
 } from '../../../api/linguistics/phonology/environment';
 import DistributionList from './DistributionList';
+import DistributionRule from './DistributionRule';
 
 type SymbolPairMap = {
     [left: string]: {
@@ -18,7 +19,7 @@ export type DistributionData = {
     [Distribution.overlapping]: SymbolPairMap;
 }
 
-function findDistributions({ symbols }: IEnvironmentParams, environmentDataMap: EnvironmentDataMap): DistributionData {
+function findDistributions({ symbols }: IEnvironmentParams, environmentDataMap: EnvironmentSymbolsDataMap): DistributionData {
     const distributions = {
         [Distribution.complementary]: {},
         [Distribution.overlapping]: {}
@@ -45,10 +46,10 @@ function findDistributions({ symbols }: IEnvironmentParams, environmentDataMap: 
 
 interface IDistributionInformationProps {
     environmentParams: IEnvironmentParams;
-    environmentDataMap: EnvironmentDataMap;
+    environmentDataMap: EnvironmentSymbolsDataMap;
 }
 
-const DistributionInformation: React.FC<IDistributionInformationProps> = ({ environmentParams, environmentDataMap }) => {
+const DistributionData: React.FC<IDistributionInformationProps> = ({ environmentParams, environmentDataMap }) => {
     if (environmentParams.symbols.length <= 1) {
         return null;
     }
@@ -56,8 +57,11 @@ const DistributionInformation: React.FC<IDistributionInformationProps> = ({ envi
     const distributions = findDistributions(environmentParams, environmentDataMap);
 
     return (
-        <DistributionList data={distributions} />
+        <>
+            <DistributionList data={distributions}/>
+            <DistributionRule environmentDataMap={environmentDataMap} symbols={environmentParams.symbols} />
+        </>
     );
 };
 
-export default DistributionInformation;
+export default DistributionData;

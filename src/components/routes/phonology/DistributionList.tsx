@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import StringUtil from '../../../api/util/StringUtil';
 import strings from '../../../config/strings';
 import Card from '../../styled/Card';
-import { DistributionData } from './DistributionInformation';
+import { DistributionData } from './DistributionData';
 
 interface IDistributionListProps {
     data: DistributionData;

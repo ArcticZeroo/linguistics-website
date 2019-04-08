@@ -171,9 +171,12 @@ const consonants: { [sound: string]: IConsonantData } = {
     }
 };
 
+const isConsonant = (source: string) => consonants.hasOwnProperty(source);
+
 export {
     PlaceOfArticulation, MannerOfArticulation, Voicing,
-    placeOfArticulationOrder, mannerOfArticulationOrder, voicingOrder
+    placeOfArticulationOrder, mannerOfArticulationOrder, voicingOrder,
+    isConsonant
 };
 
 export default consonants;

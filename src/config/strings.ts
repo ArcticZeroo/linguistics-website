@@ -63,6 +63,10 @@ export default {
         emptyString: 'All of your inputs appear to be empty.',
         tables: {
             title: 'Environment Tables'
+        },
+        distributionRule: {
+            invalidSymbolsTitle: 'Invalid Number of Symbols',
+            invalidSymbolsBody: 'Distribution rules are only supported with 2 symbols.'
         }
     },
     validation: {

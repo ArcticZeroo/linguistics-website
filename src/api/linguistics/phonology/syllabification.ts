@@ -1,6 +1,6 @@
-import consonants, { MannerOfArticulation } from '../ipa/consonants';
+import consonants, { isConsonant, MannerOfArticulation } from '../ipa/consonants';
 import { normalizeSymbols, splitIpaIntoSymbols } from '../ipa/util';
-import vowels from '../ipa/vowels';
+import vowels, { isVowel } from '../ipa/vowels';
 
 interface ISyllabificationOptions {
     maximumConsecutiveStops: number;
@@ -27,9 +27,6 @@ const sonorities = {
     [MannerOfArticulation.retroflexLiquid]: 5,
     [MannerOfArticulation.glide]: 6
 };
-
-const isVowel = (s: string) => vowels.hasOwnProperty(s);
-const isConsonant = (s: string) => consonants.hasOwnProperty(s);
 
 const getDefaultSyllable = (): ISyllable => ({ onset: [], coda: [], nucleus: [] });
 
