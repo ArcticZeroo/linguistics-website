@@ -6,8 +6,8 @@ import { IEnvironmentParams } from '../../../api/linguistics/phonology/environme
 import strings from '../../../config/strings';
 import Optional from '../../../models/Optional';
 import InfiniteInputs, { IInputData } from '../../input/infinite/InfiniteInputs';
-import Card from '../../styled/Card';
-import ErrorCard from '../../styled/ErrorCard';
+import Card from '../../styled/card/Card';
+import { ErrorCard } from '../../styled/card/colored-cards';
 import FlatButton from '../../styled/FlatButton';
 import FlexCenteredColumn from '../../styled/FlexCenteredColumn';
 import StyledInput, { maxWidthStyle } from '../../styled/StyledInput';

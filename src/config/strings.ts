@@ -75,5 +75,17 @@ export default {
     distribution: {
         [Distribution.overlapping]: 'Overlapping',
         [Distribution.complementary]: 'Complementary'
+    },
+    phonology: {
+        wordRhyme: {
+            title: 'Word Rhyming',
+            description: 'Enter two words, and see if they rhyme.',
+            wordOne: 'First Word',
+            wordTwo: 'Second Word',
+            result: {
+                yes: 'These words rhyme!',
+                no: 'These words do not rhyme.'
+            }
+        }
     }
 }

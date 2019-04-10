@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import strings from '../../../config/strings';
-import Card from '../../styled/Card';
+import Card from '../../styled/card/Card';
 import ConsonantChart from './ConsonantChart';
 import VowelChart from './VowelChart';
 

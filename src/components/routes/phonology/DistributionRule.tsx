@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { EnvironmentSymbolsDataMap } from '../../../api/linguistics/phonology/environment';
 import strings from '../../../config/strings';
-import ErrorCard from '../../styled/ErrorCard';
+import { ErrorCard } from '../../styled/card/colored-cards';
 
 interface IDistributionRuleProps {
     symbols: string[];

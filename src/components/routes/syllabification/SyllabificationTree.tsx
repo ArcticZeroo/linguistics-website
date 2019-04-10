@@ -4,7 +4,7 @@ import { ISyllable } from '../../../api/linguistics/phonology/syllabification';
 import { drawLine } from '../../../api/util/CanvasUtil';
 import CanvasContainer from '../../../api/util/CanvasContainer';
 import Position from '../../../models/Position';
-import Card from '../../styled/Card';
+import Card from '../../styled/card/Card';
 import { ISyllabificationDataProps } from './SyllabificationData';
 
 const letterWidthInPx = 16;

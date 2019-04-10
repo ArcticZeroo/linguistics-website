@@ -35,7 +35,7 @@ const getLastSyllable = <T>(syllables: T[], n: number = 1) => syllables[syllable
 
 const getSonority = (s: string) => isConsonant(s) ? sonorities[consonants[s].manner] : 0;
 
-export function findSyllables(input: string | string[], options: ISyllabificationOptions) {
+export function createIpaSyllabification(input: string | string[], options?: ISyllabificationOptions) {
     if (typeof input === 'string') {
         input = splitIpaIntoSymbols(normalizeSymbols(input));
     }

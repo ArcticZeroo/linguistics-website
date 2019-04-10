@@ -1,18 +1,16 @@
 import * as React from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { areSyllablesValid, findSyllables, ISyllable } from '../../../api/linguistics/phonology/syllabification';
+import { areSyllablesValid, createIpaSyllabification, ISyllable } from '../../../api/linguistics/phonology/syllabification';
 import handleKeyDownSubmit from '../../../api/util/handleKeyDownSubmit';
 import strings from '../../../config/strings';
 import Optional from '../../../models/Optional';
-import Card from '../../styled/Card';
-import ErrorCard from '../../styled/ErrorCard';
+import Card from '../../styled/card/Card';
+import { ErrorCard } from '../../styled/card/colored-cards';
 import FlatButton from '../../styled/FlatButton';
 import FlexCenteredColumn from '../../styled/FlexCenteredColumn';
-import PageTitle from '../../styled/PageTitle';
 import StyledInput from '../../styled/StyledInput';
 import SyllabificationData from './SyllabificationData';
-import SyllabificationTree from './SyllabificationTree';
 
 const CardInfoContainer = styled.div`
   display: flex;
@@ -45,7 +43,7 @@ const SyllabifyWord: React.FC = () => {
             return;
         }
 
-        const syllables = findSyllables(inputValue, syllabificationSettings);
+        const syllables = createIpaSyllabification(inputValue, syllabificationSettings);
 
         setSyllabificationData({
             syllables,

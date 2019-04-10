@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import StringUtil from '../../../api/util/StringUtil';
 import strings from '../../../config/strings';
-import Card from '../../styled/Card';
+import { InfoCard } from '../../styled/card/colored-cards';
 import { DistributionData } from './DistributionData';
 
 interface IDistributionListProps {
@@ -64,11 +64,11 @@ const DistributionList: React.FC<IDistributionListProps> = ({ data }) => {
     }
 
     return (
-        <Card title={'Distributions'} backgroundColor={'#214f90'}>
+        <InfoCard title={'Distributions'}>
             <DistributionBreakdownContainer>
                 {buildDistributionElements()}
             </DistributionBreakdownContainer>
-        </Card>
+        </InfoCard>
     );
 };
 

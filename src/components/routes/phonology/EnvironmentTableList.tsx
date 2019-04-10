@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { IEnvironmentData } from '../../../api/linguistics/phonology/environment';
 import strings from '../../../config/strings';
-import Card from '../../styled/Card';
+import Card from '../../styled/card/Card';
 import EnvironmentTable from './EnvironmentTable';
 
 const TablesContainer = styled.div`

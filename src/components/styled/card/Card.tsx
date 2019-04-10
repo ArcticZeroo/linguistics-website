@@ -15,7 +15,7 @@ const CardTitle = styled.div`
 
 const CardBody = styled.div``;
 
-interface ICardProps {
+export interface ICardProps {
     title?: React.ReactNode | string;
     backgroundColor?: string;
     textColor?: string;

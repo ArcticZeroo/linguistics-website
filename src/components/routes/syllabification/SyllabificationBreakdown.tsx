@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { ISyllable } from '../../../api/linguistics/phonology/syllabification';
 import StringUtil from '../../../api/util/StringUtil';
 import strings from '../../../config/strings';
-import Card from '../../styled/Card';
+import Card from '../../styled/card/Card';
+import { InfoCard } from '../../styled/card/colored-cards';
 import { ISyllabificationDataProps } from './SyllabificationData';
 
 const SyllabificationBreakdownContainer = styled.div`
@@ -61,14 +62,13 @@ const SyllabificationBreakdown: React.FC<ISyllabificationDataProps> = ({ word, s
     }
 
     return (
-        <Card
+        <InfoCard
             title={`"${word}" has ${syllables.length} ${StringUtil.getPluralizedString('Syllable', syllables.length)}`}
-            backgroundColor={'#214f90'}
         >
             <SyllabificationBreakdownContainer>
                 {buildSyllableElements()}
             </SyllabificationBreakdownContainer>
-        </Card>
+        </InfoCard>
     );
 };
 
