@@ -105,10 +105,9 @@ interface ISyllableIdentifierParams {
     onsetIndex: number;
     nucleusIndex: number;
     codaIndex: number;
-    isRhyme: boolean;
 }
 
-function drawSigmaAndAttachNodes({ canvas, syllable, onsetIndex, nucleusIndex, codaIndex, isRhyme }: ISyllableIdentifierParams) {
+function drawSigmaAndAttachNodes({ canvas, syllable, onsetIndex, nucleusIndex, codaIndex }: ISyllableIdentifierParams) {
     const typePositionOffset = { x: relationLineOffsetInPx, y: -letterSpacingInPx };
     const sigmaRhymePositionOffset = { x: relationLineOffsetInPx, y: relationLineOffsetInPx };
 
@@ -121,7 +120,7 @@ function drawSigmaAndAttachNodes({ canvas, syllable, onsetIndex, nucleusIndex, c
 
     drawSyllableIdentifier(canvas, sigmaBasePosition.x, sigmaBasePosition.y, syllableIdentifiers.sigma, letterWidthInPx * 1.35);
 
-    if (isRhyme) {
+    if (syllable.isRhyme) {
         const rhymeBasePosition = { x: getOffset(nucleusIndex), y: getBottomOffset(labelHeightMultipliers.rhyme) + relationLineOffsetInPx };
         const rhymeBottomPosition = { x: rhymeBasePosition.x + sigmaRhymePositionOffset.x, y: rhymeBasePosition.y + relationLineOffsetInPx };
 
@@ -198,16 +197,13 @@ const SyllabificationTree: React.FC<ISyllabificationDataProps> = ({ word, syllab
 
             i = syllable.coda.length ? codaIndex + 1 : codaIndex;
 
-            const isRhyme = i >= word.length;
-
-            console.log({ canvas, onsetIndex, nucleusIndex, codaIndex, isRhyme, syllable });
+            console.log({ canvas, onsetIndex, nucleusIndex, codaIndex, syllable });
 
             drawSigmaAndAttachNodes({
                 canvas,
                 onsetIndex,
                 nucleusIndex,
                 codaIndex,
-                isRhyme,
                 syllable
             });
         }

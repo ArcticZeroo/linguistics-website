@@ -1,6 +1,6 @@
 import consonants, { isConsonant, MannerOfArticulation } from '../ipa/consonants';
 import { normalizeSymbols, splitIpaIntoSymbols } from '../ipa/util';
-import vowels, { isVowel } from '../ipa/vowels';
+import { isVowel } from '../ipa/vowels';
 
 interface ISyllabificationOptions {
     maximumConsecutiveStops: number;
@@ -10,6 +10,7 @@ export interface ISyllable {
     onset: string[];
     nucleus: string[];
     coda: string[];
+    isRhyme: boolean;
 }
 
 enum CreationState {
@@ -28,7 +29,7 @@ const sonorities = {
     [MannerOfArticulation.glide]: 6
 };
 
-const getDefaultSyllable = (): ISyllable => ({ onset: [], coda: [], nucleus: [] });
+const getDefaultSyllable = (): ISyllable => ({ onset: [], coda: [], nucleus: [], isRhyme: false });
 
 const getLastSyllable = <T>(syllables: T[], n: number = 1) => syllables[syllables.length - n];
 
@@ -104,6 +105,10 @@ export function findSyllables(input: string | string[], options: ISyllabificatio
         syllable.coda = syllable.coda.reverse();
         syllable.onset = syllable.onset.reverse();
         syllable.nucleus = syllable.nucleus.reverse();
+    }
+
+    if (syllables.length) {
+        getLastSyllable(syllables).isRhyme = true;
     }
 
     return syllables.reverse();
