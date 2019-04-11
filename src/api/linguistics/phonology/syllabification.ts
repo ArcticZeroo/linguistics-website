@@ -108,7 +108,7 @@ export function createIpaSyllabification(input: string | string[], options?: ISy
     }
 
     if (syllables.length) {
-        getLastSyllable(syllables).isRhyme = true;
+        syllables[0].isRhyme = true;
     }
 
     return syllables.reverse();
@@ -116,4 +116,8 @@ export function createIpaSyllabification(input: string | string[], options?: ISy
 
 export function areSyllablesValid(syllables: ISyllable[]): boolean {
     return syllables.every(syllable => syllable.nucleus.length > 0);
+}
+
+export function syllableToString(syllable: ISyllable): string {
+    return syllable.onset.join('') + syllable.nucleus.join('') + syllable.coda.join('');
 }
