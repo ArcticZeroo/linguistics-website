@@ -12,10 +12,17 @@ interface IInfiniteInputsProps {
     onDataChange(data: IInputData): void;
     inputData: IInputData;
     onInputKeyDown?(event: React.KeyboardEvent<HTMLInputElement>): void;
+    maximumInputs?: number;
 }
 
-const InfiniteInputs: React.FC<IInfiniteInputsProps> = ({ addButtonText, onDataChange, inputData, onInputKeyDown }) => {
+const InfiniteInputs: React.FC<IInfiniteInputsProps> = ({ addButtonText, onDataChange, inputData, onInputKeyDown, maximumInputs = Number.POSITIVE_INFINITY }) => {
+    const isFull = Object.keys(inputData.values).length >= maximumInputs;
+
     function onAddInputClick() {
+        if (isFull) {
+            return;
+        }
+
         const nextId = inputData.currentId;
 
         onDataChange({
@@ -78,7 +85,7 @@ const InfiniteInputs: React.FC<IInfiniteInputsProps> = ({ addButtonText, onDataC
     return (
         <>
             {buildInputs()}
-            <AddButton text={addButtonText} onClick={onAddInputClick} />
+            {!isFull && <AddButton text={addButtonText} onClick={onAddInputClick} />}
         </>
     );
 };
