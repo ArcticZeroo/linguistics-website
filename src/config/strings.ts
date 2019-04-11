@@ -80,8 +80,8 @@ export default {
         wordRhyme: {
             title: 'Word Rhyming',
             description: 'Enter two words, and see if they rhyme.',
-            wordOne: 'First Word',
-            wordTwo: 'Second Word',
+            wordOne: 'First Word (IPA Symbols)',
+            wordTwo: 'Second Word (IPA Symbols)',
             resultsTitle: 'Word Rhyming Results',
             result: {
                 yes: 'These words rhyme!',

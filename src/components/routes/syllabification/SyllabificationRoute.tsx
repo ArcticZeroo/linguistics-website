@@ -1,13 +1,20 @@
 import * as React from 'react';
-import FlexCenteredColumn from '../../styled/FlexCenteredColumn';
+import styled from 'styled-components';
 import SyllabifyWord from './SyllabifyWord';
 import WordRhymeCheck from './WordRhymeCheck';
 
+const RouteContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
 export default () => {
     return (
-        <FlexCenteredColumn>
+        <RouteContainer>
             <SyllabifyWord/>
             <WordRhymeCheck/>
-        </FlexCenteredColumn>
+        </RouteContainer>
     );
 }
