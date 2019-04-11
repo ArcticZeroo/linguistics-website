@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import strings from '../../config/strings';
-import MaterialIcon from '../util/MaterialIcon';
+import MaterialIcon from '../util/icons/MaterialIcon';
 
 const ButtonContainer = styled.button`
   font-family: ${strings.css.googleFontFamily};

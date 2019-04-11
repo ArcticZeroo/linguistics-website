@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { getForegroundColor } from '../../../api/color/themeFromColor';
 
 const CardContainer = styled.div`
   border-radius: 0.5rem;
@@ -21,25 +22,9 @@ export interface ICardProps {
     textColor?: string;
 }
 
-function getTextColorFromBackgroundColor(color: string) {
-    if (color.startsWith('#')) {
-        const hex = color.substr(1);
-
-        const r = parseInt(hex.substr(0, 2), 16);
-        const g = parseInt(hex.substr(2, 2), 16);
-        const b = parseInt(hex.substr(4, 2), 16);
-
-        const average = (r + g + b) / 3;
-
-        return average >= (255 / 2) ? 'black' : 'white';
-    }
-
-    return 'black';
-}
-
 const Card: React.FC<ICardProps> = ({ title, children, backgroundColor, textColor }) => {
     if (!textColor && backgroundColor) {
-        textColor = getTextColorFromBackgroundColor(backgroundColor);
+        textColor = getForegroundColor(backgroundColor);
     }
 
     return (

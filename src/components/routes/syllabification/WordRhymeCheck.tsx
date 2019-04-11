@@ -8,6 +8,7 @@ import { ErrorCard } from '../../styled/card/colored-cards';
 import FlatButton from '../../styled/FlatButton';
 import FlexCenteredColumn from '../../styled/FlexCenteredColumn';
 import StyledInput from '../../styled/StyledInput';
+import { NoX, YesCheckmark } from '../../util/icons/common-icons';
 
 const RhymeForm = styled.form`
   display: flex;
@@ -96,7 +97,15 @@ export default () => {
             )}
             {rhymeData && (
                 <Card>
-                    Does rhyme: {rhymeData.doesRhyme ? 'yes' : 'no'}
+                    Do these words rhyme: <div>
+                    {
+                        rhymeData.doesRhyme ? (
+                            <YesCheckmark/>
+                        ) : (
+                            <NoX/>
+                        )
+                    }
+                </div>
                 </Card>
             )}
         </FlexCenteredColumn>

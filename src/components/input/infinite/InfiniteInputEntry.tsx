@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import StyledInput from '../../styled/StyledInput';
-import MaterialIcon from '../../util/MaterialIcon';
+import MaterialIcon from '../../util/icons/MaterialIcon';
 
 const InputContainer = styled.div`
   display: flex;
