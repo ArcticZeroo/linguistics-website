@@ -1,13 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { getForegroundColor } from '../../../api/color/themeFromColor';
-import MaterialIcon from './MaterialIcon';
 
-const CircleContainer = styled.div`
+const CircleContainer = styled.i`
   border-radius: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0.125rem;
 `;
 
 interface ICircleMaterialIconProps {
@@ -22,8 +22,8 @@ const CircleMaterialIcon: React.FC<ICircleMaterialIconProps> = ({ icon, backgrou
     }
 
     return (
-        <CircleContainer style={{ backgroundColor, textColor: iconColor }}>
-            <MaterialIcon icon={icon} />
+        <CircleContainer style={{ backgroundColor, color: iconColor }} className="material-icons">
+            {icon}
         </CircleContainer>
     );
 };

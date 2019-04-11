@@ -4,14 +4,14 @@ import CircleMaterialIcon from './CircleMaterialIcon';
 const YesCheckmark = () => (
     <CircleMaterialIcon
         icon="done"
-        backgroundColor="#22c124"
+        backgroundColor="#167a1d"
     />
 );
 
 const NoX = () => (
     <CircleMaterialIcon
         icon="close"
-        backgroundColor="#22c124"
+        backgroundColor="#851a1a"
     />
 );
 
