@@ -82,6 +82,7 @@ export default {
             description: 'Enter two words, and see if they rhyme.',
             wordOne: 'First Word',
             wordTwo: 'Second Word',
+            resultsTitle: 'Word Rhyming Results',
             result: {
                 yes: 'These words rhyme!',
                 no: 'These words do not rhyme.'

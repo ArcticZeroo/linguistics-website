@@ -115,7 +115,7 @@ export function createIpaSyllabification(input: string | string[], options?: ISy
 }
 
 export function areSyllablesValid(syllables: ISyllable[]): boolean {
-    return syllables.every(syllable => syllable.nucleus.length > 0);
+    return syllables.length >= 1 && syllables.every(syllable => syllable.nucleus.length > 0);
 }
 
 export function syllableToString(syllable: ISyllable): string {

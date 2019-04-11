@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import * as React from 'react';
 import styled from 'styled-components';
-import { createIpaSyllabification, ISyllable } from '../../../api/linguistics/phonology/syllabification';
+import {
+    areSyllablesValid,
+    createIpaSyllabification,
+    ISyllable,
+    syllableToString
+} from '../../../api/linguistics/phonology/syllabification';
 import strings from '../../../config/strings';
 import Card from '../../styled/card/Card';
 import { ErrorCard } from '../../styled/card/colored-cards';
@@ -11,6 +16,22 @@ import StyledInput from '../../styled/StyledInput';
 import { NoX, YesCheckmark } from '../../util/icons/common-icons';
 
 const RhymeForm = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const RhymeResultsRow = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const RhymeResultText = styled.span`
+  margin-left: 1rem;
+`;
+
+const RhymeInputContainer = styled.div`
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   display: flex;
   flex-direction: column;
 `;
@@ -44,8 +65,11 @@ export default () => {
         const syllablesOne = createIpaSyllabification(wordOne);
         const syllablesTwo = createIpaSyllabification(wordTwo);
 
-        if (!syllablesOne.length || !syllablesTwo.length) {
+        console.log(syllablesOne, syllablesTwo);
+
+        if (!areSyllablesValid(syllablesOne) || !areSyllablesValid(syllablesTwo)) {
             setRhymeState({ errorText: 'Both words must produce a valid syllabification.' });
+            return;
         }
 
         const rhymeSyllableOne = syllablesOne[syllablesOne.length - 1];
@@ -73,20 +97,24 @@ export default () => {
                 <RhymeForm onSubmit={onSubmit}>
                     {strings.phonology.wordRhyme.description}
 
-                    <label>
-                        {strings.phonology.wordRhyme.wordOne}
-                    </label>
+                    <RhymeInputContainer>
+                        <label>
+                            {strings.phonology.wordRhyme.wordOne}
+                        </label>
 
-                    <StyledInput value={wordOne} onChange={e => setWordOne(e.target.value)} required={true} />
+                        <StyledInput value={wordOne} onChange={e => setWordOne(e.target.value)} required={true} />
+                    </RhymeInputContainer>
 
-                    <label>
-                        {strings.phonology.wordRhyme.wordTwo}
-                    </label>
+                    <RhymeInputContainer>
+                        <label>
+                            {strings.phonology.wordRhyme.wordTwo}
+                        </label>
 
-                    <StyledInput value={wordTwo} onChange={e => setWordTwo(e.target.value)} required={true} />
+                        <StyledInput value={wordTwo} onChange={e => setWordTwo(e.target.value)} required={true} />
+                    </RhymeInputContainer>
 
                     <FlatButton type="submit">
-                        Check
+                        Check Rhyming
                     </FlatButton>
                 </RhymeForm>
             </Card>
@@ -96,16 +124,43 @@ export default () => {
                 </ErrorCard>
             )}
             {rhymeData && (
-                <Card>
-                    Do these words rhyme: <div>
-                    {
-                        rhymeData.doesRhyme ? (
-                            <YesCheckmark/>
-                        ) : (
-                            <NoX/>
-                        )
-                    }
-                </div>
+                <Card title={strings.phonology.wordRhyme.resultsTitle}>
+                    <RhymeResultsRow>
+                        {
+                            rhymeData.doesRhyme ? (
+                                <YesCheckmark/>
+                            ) : (
+                                <NoX/>
+                            )
+                        }
+                        <RhymeResultText>
+                            {
+                                rhymeData.doesRhyme ? strings.phonology.wordRhyme.result.yes : strings.phonology.wordRhyme.result.no
+                            }
+                        </RhymeResultText>
+                    </RhymeResultsRow>
+
+                    <p>
+                        The last syllable for "{rhymeData.wordOne}" is "{syllableToString(rhymeData.rhymeSyllableOne)}"
+                    </p>
+
+                    <p>
+                        The last syllable for "{rhymeData.wordTwo}" is "{syllableToString(rhymeData.rhymeSyllableTwo)}"
+                    </p>
+
+                    <p>
+                        {
+                            rhymeData.doesRhyme ? (
+                                <>
+                                    Their nuclei ("{rhymeData.rhymeSyllableOne.nucleus.join('')}") and coda ("{rhymeData.rhymeSyllableOne.coda.join('')}") match.
+                                </>
+                            ) : (
+                                <>
+                                    Their nuclei and coda do not match.
+                                </>
+                            )
+                        }
+                    </p>
                 </Card>
             )}
         </FlexCenteredColumn>
