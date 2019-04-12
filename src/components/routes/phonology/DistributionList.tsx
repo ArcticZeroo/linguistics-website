@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import StringUtil from '../../../api/util/StringUtil';
 import strings from '../../../config/strings';
 import { InfoCard } from '../../styled/card/colored-cards';
-import { DistributionData } from './DistributionData';
+import { DistributionMap } from './DistributionData';
 
 interface IDistributionListProps {
-    data: DistributionData;
+    data: DistributionMap;
 }
 
 const DistributionBreakdownContainer = styled.div`

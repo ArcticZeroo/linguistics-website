@@ -20,6 +20,12 @@ export interface IEnvironmentData {
     rightToLeft: EnvironmentMap;
 }
 
+export interface IDistributionData {
+    left: Distribution;
+    right: Distribution;
+    overall: Distribution;
+}
+
 export const wordBoundaryIdentifier = '#';
 
 function getEnvironmentIdentifier(symbols: string[], index: number) {
@@ -79,12 +85,21 @@ function findSideDistribution(dataA: EnvironmentMap, dataB: EnvironmentMap) {
     return Distribution.complementary;
 }
 
-export function findPairDistribution(dataA: IEnvironmentData, dataB: IEnvironmentData) {
-    const leftDistribution = findSideDistribution(dataA.leftToRight, dataB.leftToRight);
-
-    if (leftDistribution === Distribution.complementary) {
+function getOverallDistribution(left: Distribution, right: Distribution) {
+    if (left === Distribution.complementary || right === Distribution.complementary) {
         return Distribution.complementary;
     }
 
-    return findSideDistribution(dataA.rightToLeft, dataB.rightToLeft);
+    return Distribution.overlapping;
+}
+
+export function findPairDistribution(dataA: IEnvironmentData, dataB: IEnvironmentData): IDistributionData {
+    const leftDistribution = findSideDistribution(dataA.leftToRight, dataB.leftToRight);
+    const rightDistribution = findSideDistribution(dataA.rightToLeft, dataB.rightToLeft);
+
+    return {
+        left: leftDistribution,
+        right: rightDistribution,
+        overall: getOverallDistribution(leftDistribution, rightDistribution)
+    };
 }

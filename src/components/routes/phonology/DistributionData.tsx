@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
     Distribution,
     EnvironmentSymbolsDataMap,
-    findPairDistribution,
+    findPairDistribution, IDistributionData,
     IEnvironmentParams
 } from '../../../api/linguistics/phonology/environment';
 import DistributionList from './DistributionList';
@@ -10,17 +10,17 @@ import DistributionRule from './DistributionRule';
 
 type SymbolPairMap = {
     [left: string]: {
-        [right: string]: boolean
+        [right: string]: IDistributionData
     }
 };
 
-export type DistributionData = {
+export type DistributionMap = {
     [Distribution.complementary]: SymbolPairMap;
     [Distribution.overlapping]: SymbolPairMap;
 }
 
-function findDistributions({ symbols }: IEnvironmentParams, environmentDataMap: EnvironmentSymbolsDataMap): DistributionData {
-    const distributions = {
+function findDistributions({ symbols }: IEnvironmentParams, environmentDataMap: EnvironmentSymbolsDataMap): DistributionMap {
+    const distributions: DistributionMap = {
         [Distribution.complementary]: {},
         [Distribution.overlapping]: {}
     };
@@ -31,13 +31,13 @@ function findDistributions({ symbols }: IEnvironmentParams, environmentDataMap: 
         for (let j = i + 1; j < symbols.length; ++j) {
             const symbolJ = symbols[j];
 
-            const distribution = findPairDistribution(environmentDataMap[symbolI], environmentDataMap[symbolJ]);
+            const distributionData = findPairDistribution(environmentDataMap[symbolI], environmentDataMap[symbolJ]);
 
-            if (!distributions[distribution][symbolI]) {
-                distributions[distribution][symbolI] = {};
+            if (!distributions[distributionData.overall][symbolI]) {
+                distributions[distributionData.overall][symbolI] = {};
             }
 
-            distributions[distribution][symbolI][symbolJ] = true;
+            distributions[distributionData.overall][symbolI][symbolJ] = distributionData;
         }
     }
 
