@@ -1,7 +1,8 @@
 import Optional from '../../../models/Optional';
 import consonants, { isConsonant } from '../ipa/consonants';
-import vowels, { isVowel, TongueHeight } from '../ipa/vowels';
+import vowels, { isVowel } from '../ipa/vowels';
 import {
+    Distribution,
     EnvironmentMap,
     EnvironmentSymbolsDataMap,
     IDistributionData,
@@ -10,16 +11,16 @@ import {
 } from './environment';
 
 enum NaturalClassType {
-    wordBoundary,
-    vowel,
-    consonant,
-    consonantPlace,
-    consonantManner,
-    consonantVoicing,
-    vowelHeight,
-    vowelFrontBackness,
-    vowelRounding,
-    vowelTenseness
+    wordBoundary = 'boundary',
+    vowel = 'vowel',
+    consonant = 'consonant',
+    consonantPlace = 'place',
+    consonantManner = 'manner',
+    consonantVoicing = 'voice',
+    vowelHeight = 'height',
+    vowelFrontBackness = 'frontback',
+    vowelRounding = 'round',
+    vowelTenseness = 'tense'
 }
 
 enum RelativePosition {
@@ -27,7 +28,7 @@ enum RelativePosition {
     right
 }
 
-function isTypeWithSameProp<T>(map: EnvironmentMap, typePredicate: (s: string) => boolean, propGetter: (s: string) => T) {
+function isTypeWithSameProp<T>(map: EnvironmentMap, typePredicate: (s: string) => boolean, propGetter: (s: string) => T): boolean {
     let last: Optional<T> = null;
 
     return Object.keys(map).every(s => {
@@ -83,10 +84,14 @@ const naturalClassTests = {
     }
 };
 
-const testData = [
-    naturalClassTests.wordBoundary, NaturalClassType.wordBoundary,
-    naturalClassTests.vowel, NaturalClassType.vowel,
-    naturalClassTests.consonant, NaturalClassType.consonant
+const testData: Array<[(map: EnvironmentMap) => boolean, NaturalClassType]> = [
+    [naturalClassTests.wordBoundary, NaturalClassType.wordBoundary],
+    [naturalClassTests.vowel, NaturalClassType.vowel],
+    [naturalClassTests.consonant, NaturalClassType.consonant],
+    [naturalClassTests.vowelWithSameHeight, NaturalClassType.vowelHeight],
+    [naturalClassTests.vowelWithSameFrontBackness, NaturalClassType.vowelFrontBackness],
+    [naturalClassTests.consonantWithSamePlace, NaturalClassType.consonantPlace],
+    [naturalClassTests.consonantWithSameManner, NaturalClassType.consonantManner]
 ];
 
 function isEveryEnvironmentWordBoundary(map: IEnvironmentData) {
@@ -108,15 +113,29 @@ function isEveryEnvironmentWordBoundary(map: IEnvironmentData) {
 }
 
 function findNaturalClass(data: EnvironmentMap): Optional<NaturalClassType> {
-    return null;
+    const naturalClasses = [];
 
-    for (const testName of Object.keys(naturalClassTests)) {
-
+    for (const [testMethod, naturalClass] of testData) {
+        if (testMethod(data)) {
+            naturalClasses.push(naturalClass);
+        }
     }
+
+    console.log(naturalClasses);
+
+    return null;
 }
 
-function findDistributionRule(symbols: [string, string], map: EnvironmentSymbolsDataMap, distribution: IDistributionData) {
+export function findDistributionRule(symbols: [string, string], map: EnvironmentSymbolsDataMap, distribution: IDistributionData) {
     const [symbolA, symbolB] = symbols;
 
+    if (distribution.left === Distribution.complementary) {
+        findNaturalClass(map[symbolA].leftToRight);
+        findNaturalClass(map[symbolB].leftToRight);
+    }
 
+    if (distribution.right === Distribution.complementary) {
+        findNaturalClass(map[symbolA].rightToLeft);
+        findNaturalClass(map[symbolB].rightToLeft);
+    }
 }

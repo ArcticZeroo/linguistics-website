@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import * as React from 'react';
 import styled from 'styled-components';
-import { isKnownIpaSymbol, splitIpaIntoSymbols } from '../../../api/linguistics/ipa/util';
 import { IEnvironmentParams } from '../../../api/linguistics/phonology/environment';
 import strings from '../../../config/strings';
 import Optional from '../../../models/Optional';

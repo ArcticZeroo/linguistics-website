@@ -55,12 +55,10 @@ const DistributionInfo: React.FC<IDistributionInformationProps> = ({ environment
     }
 
     const distributions = findDistributions(environmentParams, environmentDataMap);
-    const [symbolA, symbolB] = environmentParams.symbols;
 
     return (
         <>
             <DistributionList data={distributions}/>
-            {environmentParams.symbols.length === 2 && <DistributionRule environmentDataMap={environmentDataMap} symbols={[symbolA, symbolB]} distribution={distributions[symbolA]} />}
         </>
     );
 };
