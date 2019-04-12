@@ -22,31 +22,7 @@ const InputContainer = styled.div`
 `;
 
 function splitSymbols(source: string) {
-    const split = source.split(/([,]\s+|[,]|\s+)/);
-
-    const symbols: Set<string> = new Set();
-
-    for (const item of split) {
-        if (isKnownIpaSymbol(item)) {
-            symbols.add(item);
-            continue;
-        }
-
-        // Don't bother trying to split and search for symbols within,
-        // if it's already the smallest unit we can muster.
-        if (item.length === 1) {
-            continue;
-        }
-
-        // If the symbol is not known
-        const knownSymbolsByChar = splitIpaIntoSymbols(item).filter(isKnownIpaSymbol);
-
-        for (const symbol of knownSymbolsByChar) {
-            symbols.add(symbol);
-        }
-    }
-
-    return symbols;
+    return new Set(source.split(/[,\s]+/));
 }
 
 function getValidationError(data: Optional<IEnvironmentParams>): Optional<string> {

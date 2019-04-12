@@ -46,29 +46,29 @@ export function findEnvironments({ sources, symbols }: IEnvironmentParams): Envi
     for (const source of sources) {
         const ipaSymbolsInSource = splitIpaIntoSymbols(source);
 
-        for (let i = 0; i < ipaSymbolsInSource.length; ++i) {
-            const symbol = ipaSymbolsInSource[i];
-
-            // tracked symbol
-            if (!dataMap.hasOwnProperty(symbol)) {
-                continue;
-            }
-
+        for (const symbol of symbols) {
             const data: IEnvironmentData = dataMap[symbol];
 
-            const left = getEnvironmentIdentifier(ipaSymbolsInSource, i - 1);
-            const right = getEnvironmentIdentifier(ipaSymbolsInSource, i + 1);
+            let i = 0;
+            while (i < source.length && (i = source.indexOf(symbol, i)) !== -1) {
+                const endIndex = i + symbol.length;
 
-            if (!data.leftToRight[left]) {
-                data.leftToRight[left] = {};
+                const leftSymbol = getEnvironmentIdentifier(ipaSymbolsInSource, i - 1);
+                const rightSymbol = getEnvironmentIdentifier(ipaSymbolsInSource, endIndex);
+
+                if (!data.leftToRight[leftSymbol]) {
+                    data.leftToRight[leftSymbol] = {};
+                }
+
+                if (!data.rightToLeft[rightSymbol]) {
+                    data.rightToLeft[rightSymbol] = {};
+                }
+
+                data.leftToRight[leftSymbol][rightSymbol] = true;
+                data.rightToLeft[rightSymbol][leftSymbol] = true;
+
+                ++i;
             }
-
-            if (!data.rightToLeft[right]) {
-                data.rightToLeft[right] = {};
-            }
-
-            data.leftToRight[left][right] = true;
-            data.rightToLeft[right][left] = true;
         }
     }
 

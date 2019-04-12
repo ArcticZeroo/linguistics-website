@@ -4,9 +4,9 @@ import {
     EnvironmentSymbolsDataMap,
     findPairDistribution, IDistributionData,
     IEnvironmentParams
-} from '../../../api/linguistics/phonology/environment';
+} from '../../../../api/linguistics/phonology/environment';
 import DistributionList from './DistributionList';
-import DistributionRule from './DistributionRule';
+import DistributionRule from './rule/DistributionRule';
 
 type SymbolPairMap = {
     [left: string]: {
@@ -49,19 +49,20 @@ interface IDistributionInformationProps {
     environmentDataMap: EnvironmentSymbolsDataMap;
 }
 
-const DistributionData: React.FC<IDistributionInformationProps> = ({ environmentParams, environmentDataMap }) => {
+const DistributionInfo: React.FC<IDistributionInformationProps> = ({ environmentParams, environmentDataMap }) => {
     if (environmentParams.symbols.length <= 1) {
         return null;
     }
 
     const distributions = findDistributions(environmentParams, environmentDataMap);
+    const [symbolA, symbolB] = environmentParams.symbols;
 
     return (
         <>
             <DistributionList data={distributions}/>
-            <DistributionRule environmentDataMap={environmentDataMap} symbols={environmentParams.symbols} />
+            {environmentParams.symbols.length === 2 && <DistributionRule environmentDataMap={environmentDataMap} symbols={[symbolA, symbolB]} distribution={distributions[symbolA]} />}
         </>
     );
 };
 
-export default DistributionData;
+export default DistributionInfo;

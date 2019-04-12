@@ -57,7 +57,7 @@ export default {
     phoneticEnvironment: {
         title: 'Phonetic Environment Analysis',
         wordsLabel: 'Enter words (as IPA symbols) to search in',
-        symbolsLabel: 'Enter IPA symbols to search for (separate by commas or spaces)',
+        symbolsLabel: 'Enter allomorphs to search for (as IPA - separate by commas or spaces)',
         analyzeButtonText: 'Analyze Environment',
         noSymbols: 'No valid symbols were found in your input.',
         emptyString: 'All of your inputs appear to be empty.',

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import StringUtil from '../../../api/util/StringUtil';
-import strings from '../../../config/strings';
-import { InfoCard } from '../../styled/card/colored-cards';
-import { DistributionMap } from './DistributionData';
+import StringUtil from '../../../../api/util/StringUtil';
+import strings from '../../../../config/strings';
+import { InfoCard } from '../../../styled/card/colored-cards';
+import { DistributionMap } from './DistributionInfo';
 
 interface IDistributionListProps {
     data: DistributionMap;

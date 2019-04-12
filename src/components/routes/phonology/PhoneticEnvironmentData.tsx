@@ -4,7 +4,7 @@ import {
     findEnvironments,
     IEnvironmentParams
 } from '../../../api/linguistics/phonology/environment';
-import DistributionData from './DistributionData';
+import DistributionInfo from './distribution/DistributionInfo';
 import EnvironmentTableList from './EnvironmentTableList';
 
 const Container = styled.div`
@@ -22,7 +22,7 @@ const PhoneticEnvironmentData: React.FC<IPhoneticEnvironmentDataProps> = ({ envi
     return (
         <Container>
             <EnvironmentTableList dataMap={environmentDataMap} />
-            <DistributionData environmentParams={environmentParams} environmentDataMap={environmentDataMap} />
+            <DistributionInfo environmentParams={environmentParams} environmentDataMap={environmentDataMap} />
         </Container>
     );
 };
