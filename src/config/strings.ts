@@ -88,5 +88,11 @@ export default {
                 no: 'These words do not rhyme.'
             }
         }
+    },
+    morphology: {
+        inputs: {
+            deleteHoverText: 'Click to delete this input',
+            readOnlyData: 'Please check the box to fill out this field'
+        }
     }
 }
