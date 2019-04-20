@@ -15,41 +15,44 @@ const TranslationInputContainer = styled.tr`
 const TranslationInputLabel = styled.td`
 `;
 
+export enum TranslationDataType {
+    adjective,
+    plural,
+    pronoun
+}
+
 export interface ITranslationData {
-    hasAdjective: boolean;
-    isPlural: boolean;
-    hasPronoun: boolean;
     baseWord: string;
-    adjective: string;
-    pronoun: string;
+    enabled: { [type: number]: boolean }
+    data: { [type: number]: string }
 }
 
 export function createDefaultTranslationData(): ITranslationData {
     return {
-        hasPronoun: false,
-        hasAdjective: false,
-        isPlural: false,
         baseWord: '',
-        adjective: '',
-        pronoun: ''
+        enabled: {},
+        data: {}
     };
 }
 
 interface IBooleanInputProps {
     label: string;
-    booleanPropName: string;
+    type: TranslationDataType;
     currentData: ITranslationData;
 
     onChange(data: ITranslationData): void;
 }
 
-const BooleanInput: React.FC<IBooleanInputProps> = ({ label, currentData, booleanPropName, onChange }) => {
-    const isChecked = currentData[booleanPropName];
+const BooleanInput: React.FC<IBooleanInputProps> = ({ label, currentData, type, onChange }) => {
+    const isChecked = currentData.enabled[type];
 
     function onCheckboxChecked() {
         onChange({
             ...currentData,
-            [booleanPropName]: !isChecked
+            enabled: {
+                ...currentData.enabled,
+                [type]: !isChecked
+            }
         });
     }
 
@@ -65,32 +68,31 @@ const BooleanInput: React.FC<IBooleanInputProps> = ({ label, currentData, boolea
     );
 };
 
-interface IConditionalInputProps extends IBooleanInputProps {
-    valuePropName: string;
-}
-
-const ConditionalInput: React.FC<IConditionalInputProps> = ({ label, booleanPropName, valuePropName, onChange, currentData }) => {
+const ConditionalInput: React.FC<IBooleanInputProps> = ({ label, type, onChange, currentData }) => {
     function onValueChanged(event: React.ChangeEvent<HTMLInputElement>) {
         onChange({
             ...currentData,
-            [valuePropName]: event.target.value
+            data: {
+                ...currentData.data,
+                [type]: event.target.value
+            }
         });
     }
 
-    const isReadOnly = !currentData[booleanPropName];
+    const isReadOnly = !currentData.enabled[type];
 
     return (
         <>
             <BooleanInput
                 label={label}
-                booleanPropName={booleanPropName}
+                type={type}
                 currentData={currentData}
                 onChange={onChange}
             />
 
             <td>
                 <StyledInput
-                    value={currentData[valuePropName]}
+                    value={currentData.data[type]}
                     onChange={onValueChanged}
                     readOnly={isReadOnly}
                     title={isReadOnly ? strings.morphology.inputs.readOnlyData : ''}
@@ -130,8 +132,7 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ data, onChan
             <TranslationInputContainer>
                 <ConditionalInput
                     label="Adjective?"
-                    booleanPropName="hasAdjective"
-                    valuePropName="adjective"
+                    type={TranslationDataType.adjective}
                     currentData={data}
                     onChange={onChange}
                 />
@@ -139,8 +140,7 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ data, onChan
             <TranslationInputContainer>
                 <ConditionalInput
                     label="Pronoun?"
-                    booleanPropName="hasPronoun"
-                    valuePropName="pronoun"
+                    type={TranslationDataType.pronoun}
                     currentData={data}
                     onChange={onChange}
                 />
@@ -148,7 +148,7 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ data, onChan
             <TranslationInputContainer>
                 <BooleanInput
                     label="Plural?"
-                    booleanPropName="isPlural"
+                    type={TranslationDataType.plural}
                     currentData={data}
                     onChange={onChange}
                 />
