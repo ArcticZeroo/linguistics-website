@@ -59,7 +59,7 @@ const InputEntry: React.FC<IInputEntryProps> = ({ id, word, translationData, onV
             </tr>
             <tr>
                 <PrimaryInput>
-                    <StyledInput value={word} onChange={e => onValueChanged(id, e.target.value)}/>
+                    <StyledInput value={word} onChange={e => onValueChanged(id, e.target.value)} required={true}/>
                 </PrimaryInput>
                 <td>
                     <TranslationSettings

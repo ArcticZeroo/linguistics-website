@@ -5,8 +5,8 @@ interface IToggleStyledComponentProps {
     isChecked: boolean;
 }
 
-const heightInRem = 1.5;
-const widthInRem = 3;
+const heightInRem = 1;
+const widthInRem = 2;
 const animationLength = `0.15s`;
 
 const ToggleContainer = styled.div<IToggleStyledComponentProps>`
