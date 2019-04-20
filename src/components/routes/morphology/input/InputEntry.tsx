@@ -12,6 +12,13 @@ const DeleteButton = styled.div`
   align-items: center;
   justify-content: center;
   color: #212121;
+  border-radius: 100%;
+  transition: color 0.25s ease, background-color 0.25s ease;
+  
+  :hover {
+      color: white;
+      background: ${strings.colors.brightRed};
+  }
 `;
 
 const PrimaryInput = styled.td`
@@ -31,6 +38,7 @@ interface IInputEntryProps {
     id: number;
     word: string;
     translationData: ITranslationData;
+    entryName: string;
 
     onValueChanged(id: number, value: string): void;
 
@@ -39,7 +47,7 @@ interface IInputEntryProps {
     onDelete(id: number, event: React.MouseEvent<HTMLDivElement>): void;
 }
 
-const InputEntry: React.FC<IInputEntryProps> = ({ id, word, translationData, onValueChanged, onTranslationDataChanged, onDelete }: IInputEntryProps) => {
+const InputEntry: React.FC<IInputEntryProps> = ({ id, word, translationData, entryName, onValueChanged, onTranslationDataChanged, onDelete }: IInputEntryProps) => {
     console.log('created entry with id', id);
 
     return (
@@ -47,7 +55,7 @@ const InputEntry: React.FC<IInputEntryProps> = ({ id, word, translationData, onV
             <tr>
                 <td>
                     <InputLabel>
-                        Non-English Word
+                        {entryName}
                     </InputLabel>
                 </td>
                 <td>

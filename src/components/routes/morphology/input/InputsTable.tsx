@@ -22,12 +22,13 @@ export function createDefaultWordInputData(): IWordInputData {
 }
 
 interface IInputsTableProps {
+    entryName: string;
     state: IInputState;
 
     setState(newState: IInputState): void;
 }
 
-const InputsTable: React.FC<IInputsTableProps> = ({ state: { values, currentId }, setState }) => {
+const InputsTable: React.FC<IInputsTableProps> = ({ state: { values, currentId }, setState, entryName }) => {
     function onTranslationDataChanged(id: number, translationData: ITranslationData) {
         console.log(values, id, translationData);
 
@@ -103,6 +104,7 @@ const InputsTable: React.FC<IInputsTableProps> = ({ state: { values, currentId }
                     key={`input-${id}`}
                     translationData={values[id].translationData}
                     word={values[id].word}
+                    entryName={entryName}
                 />
             );
         }

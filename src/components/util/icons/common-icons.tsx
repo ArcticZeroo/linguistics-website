@@ -1,4 +1,5 @@
 import * as React from 'react';
+import strings from '../../../config/strings';
 import CircleMaterialIcon from './CircleMaterialIcon';
 
 const YesCheckmark = () => (
@@ -15,4 +16,11 @@ const NoX = () => (
     />
 );
 
-export { YesCheckmark, NoX };
+const Delete = () => (
+    <CircleMaterialIcon
+        icon="delete"
+        backgroundColor={strings.colors.brightRed}
+    />
+);
+
+export { YesCheckmark, NoX, Delete };

@@ -28,7 +28,10 @@ export default {
         [Voicing.voiced]: 'Voiced'
     },
     css: {
-        googleFontFamily: '"Google Sans", "Product Sans", "Roboto", sans-serif'
+        googleFontFamily: '"Google Sans", "Product Sans", "Roboto", sans-serif',
+    },
+    colors: {
+        brightRed: '#F44336'
     },
     tongueFrontBackness: {
         [TongueFrontBackness.front]: 'Front',
@@ -91,6 +94,8 @@ export default {
     },
     morphology: {
         inputs: {
+            inputsName: 'Non-English Word',
+            outputsName: 'English Word',
             deleteHoverText: 'Click to delete this input',
             readOnlyData: 'Please check the box to fill out this field'
         }

@@ -94,6 +94,7 @@ const ConditionalInput: React.FC<IConditionalInputProps> = ({ label, booleanProp
                     onChange={onValueChanged}
                     readOnly={isReadOnly}
                     title={isReadOnly ? strings.morphology.inputs.readOnlyData : ''}
+                    required={!isReadOnly}
                 />
             </td>
         </>
