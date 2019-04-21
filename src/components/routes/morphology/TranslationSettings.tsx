@@ -18,20 +18,19 @@ const TranslationInputLabel = styled.td`
 export enum TranslationDataType {
     adjective,
     plural,
-    pronoun
+    pronoun,
+    base
 }
 
 export interface ITranslationData {
-    baseWord: string;
-    enabled: { [type: number]: boolean }
-    data: { [type: number]: string }
+    isEnabled: { [type: number]: boolean }
+    values: { [type: number]: string }
 }
 
 export function createDefaultTranslationData(): ITranslationData {
     return {
-        baseWord: '',
-        enabled: {},
-        data: {}
+        isEnabled: {},
+        values: {}
     };
 }
 
@@ -44,13 +43,13 @@ interface IBooleanInputProps {
 }
 
 const BooleanInput: React.FC<IBooleanInputProps> = ({ label, currentData, type, onChange }) => {
-    const isChecked = currentData.enabled[type];
+    const isChecked = currentData.isEnabled[type];
 
     function onCheckboxChecked() {
         onChange({
             ...currentData,
-            enabled: {
-                ...currentData.enabled,
+            isEnabled: {
+                ...currentData.isEnabled,
                 [type]: !isChecked
             }
         });
@@ -72,14 +71,14 @@ const ConditionalInput: React.FC<IBooleanInputProps> = ({ label, type, onChange,
     function onValueChanged(event: React.ChangeEvent<HTMLInputElement>) {
         onChange({
             ...currentData,
-            data: {
-                ...currentData.data,
+            values: {
+                ...currentData.values,
                 [type]: event.target.value
             }
         });
     }
 
-    const isReadOnly = !currentData.enabled[type];
+    const isReadOnly = !currentData.isEnabled[type];
 
     return (
         <>
@@ -92,7 +91,7 @@ const ConditionalInput: React.FC<IBooleanInputProps> = ({ label, type, onChange,
 
             <td>
                 <StyledInput
-                    value={currentData.data[type]}
+                    value={currentData.values[type]}
                     onChange={onValueChanged}
                     readOnly={isReadOnly}
                     title={isReadOnly ? strings.morphology.inputs.readOnlyData : ''}
@@ -104,16 +103,19 @@ const ConditionalInput: React.FC<IBooleanInputProps> = ({ label, type, onChange,
 };
 
 interface ITranslationSettingsProps {
-    data: ITranslationData;
+    settings: ITranslationData;
+    canBaseBeDisabled?: boolean;
 
     onChange(data: ITranslationData): void;
 }
 
-const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ data, onChange }) => {
+const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ settings, onChange, canBaseBeDisabled }) => {
     function onBaseWordChange(event: React.ChangeEvent<HTMLInputElement>) {
         onChange({
-            ...data,
-            baseWord: event.target.value
+            ...settings,
+            values: {
+                [TranslationDataType.base]: event.target.value
+            }
         });
     }
 
@@ -121,19 +123,32 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ data, onChan
         <TranslationDataContainer>
             <tbody>
             <TranslationInputContainer>
-                <td>
-                    Base Word
-                </td>
-                <td/>
-                <td>
-                    <StyledInput value={data.baseWord} onChange={onBaseWordChange} required={true}/>
-                </td>
+                {
+                    canBaseBeDisabled ? (
+                        <ConditionalInput
+                            label="Base Word"
+                            type={TranslationDataType.base}
+                            currentData={settings}
+                            onChange={onChange}
+                        />
+                    ) : (
+                        <>
+                            <td>
+                                Base Word
+                            </td>
+                            <td/>
+                            <td>
+                                <StyledInput value={settings.values[TranslationDataType.base]} onChange={onBaseWordChange} required={true}/>
+                            </td>
+                        </>
+                    )
+                }
             </TranslationInputContainer>
             <TranslationInputContainer>
                 <ConditionalInput
                     label="Adjective?"
                     type={TranslationDataType.adjective}
-                    currentData={data}
+                    currentData={settings}
                     onChange={onChange}
                 />
             </TranslationInputContainer>
@@ -141,7 +156,7 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ data, onChan
                 <ConditionalInput
                     label="Pronoun?"
                     type={TranslationDataType.pronoun}
-                    currentData={data}
+                    currentData={settings}
                     onChange={onChange}
                 />
             </TranslationInputContainer>
@@ -149,7 +164,7 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ data, onChan
                 <BooleanInput
                     label="Plural?"
                     type={TranslationDataType.plural}
-                    currentData={data}
+                    currentData={settings}
                     onChange={onChange}
                 />
             </TranslationInputContainer>

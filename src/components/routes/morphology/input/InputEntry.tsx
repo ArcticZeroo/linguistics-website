@@ -39,6 +39,7 @@ interface IInputEntryProps {
     word: string;
     translationData: ITranslationData;
     entryName: string;
+    canBaseBeDisabled?: boolean;
 
     onValueChanged(id: number, value: string): void;
 
@@ -47,7 +48,7 @@ interface IInputEntryProps {
     onDelete(id: number, event: React.MouseEvent<HTMLDivElement>): void;
 }
 
-const InputEntry: React.FC<IInputEntryProps> = ({ id, word, translationData, entryName, onValueChanged, onTranslationDataChanged, onDelete }: IInputEntryProps) => {
+const InputEntry: React.FC<IInputEntryProps> = ({ id, word, translationData, entryName, canBaseBeDisabled, onValueChanged, onTranslationDataChanged, onDelete }: IInputEntryProps) => {
     console.log('created entry with id', id);
 
     return (
@@ -60,7 +61,7 @@ const InputEntry: React.FC<IInputEntryProps> = ({ id, word, translationData, ent
                 </td>
                 <td>
                     <InputLabel>
-                        Translation Settings
+                        Translation Settings (English)
                     </InputLabel>
                 </td>
                 <td/>
@@ -71,7 +72,8 @@ const InputEntry: React.FC<IInputEntryProps> = ({ id, word, translationData, ent
                 </PrimaryInput>
                 <td>
                     <TranslationSettings
-                        data={translationData}
+                        settings={translationData}
+                        canBaseBeDisabled={canBaseBeDisabled}
                         onChange={data => onTranslationDataChanged(id, data)}
                     />
                 </td>

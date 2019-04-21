@@ -95,7 +95,7 @@ export default {
     morphology: {
         inputs: {
             inputsName: 'Non-English Word',
-            outputsName: 'English Word',
+            outputsName: 'Label',
             deleteHoverText: 'Click to delete this input',
             readOnlyData: 'Please check the box to fill out this field'
         }

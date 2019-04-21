@@ -9,7 +9,7 @@ export interface IInputState {
     values: { [id: number]: IWordInputData };
 }
 
-interface IWordInputData {
+export interface IWordInputData {
     word: string;
     translationData: ITranslationData;
 }
@@ -24,11 +24,12 @@ export function createDefaultWordInputData(): IWordInputData {
 interface IInputsTableProps {
     entryName: string;
     state: IInputState;
+    canBaseBeDisabled?: boolean;
 
     setState(newState: IInputState): void;
 }
 
-const InputsTable: React.FC<IInputsTableProps> = ({ state: { values, currentId }, setState, entryName }) => {
+const InputsTable: React.FC<IInputsTableProps> = ({ state: { values, currentId }, setState, entryName, canBaseBeDisabled }) => {
     function onTranslationDataChanged(id: number, translationData: ITranslationData) {
         console.log(values, id, translationData);
 
@@ -105,6 +106,7 @@ const InputsTable: React.FC<IInputsTableProps> = ({ state: { values, currentId }
                     translationData={values[id].translationData}
                     word={values[id].word}
                     entryName={entryName}
+                    canBaseBeDisabled={canBaseBeDisabled}
                 />
             );
         }
