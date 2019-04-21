@@ -78,7 +78,9 @@ const InputsTable: React.FC<IInputsTableProps> = ({ state: { values, currentId }
         });
     }
 
-    function onInputAdded() {
+    function onInputAdded(event: React.MouseEvent) {
+        event.preventDefault();
+
         const nextId = currentId + 1;
 
         setState({

@@ -12,6 +12,12 @@ import InputsTable, { createDefaultWordInputData, IInputState } from './input/In
 // my dog
 // our dog
 // dogs
+const HorizontalInputContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+`;
+
 const SubmitButtonContainer = styled.div`
   display: flex;
   align-items: center;
@@ -31,22 +37,24 @@ const MorphologyRoute = () => {
     return (
         <FlexCenteredColumn>
             <form onSubmit={onFormSubmit}>
-                <Card title="Inputs">
-                    <InputsTable
-                        state={inputState}
-                        setState={setInputState}
-                        entryName={strings.morphology.inputs.inputsName}
-                        canBaseBeDisabled={false}
-                    />
-                </Card>
-                <Card title="Outputs">
-                    <InputsTable
-                        state={outputState}
-                        setState={setOutputState}
-                        entryName={strings.morphology.inputs.outputsName}
-                        canBaseBeDisabled={true}
-                    />
-                </Card>
+                <HorizontalInputContainer>
+                    <Card title="Inputs">
+                        <InputsTable
+                            state={inputState}
+                            setState={setInputState}
+                            entryName={strings.morphology.inputs.inputsName}
+                            canBaseBeDisabled={false}
+                        />
+                    </Card>
+                    <Card title="Outputs">
+                        <InputsTable
+                            state={outputState}
+                            setState={setOutputState}
+                            entryName={strings.morphology.inputs.outputsName}
+                            canBaseBeDisabled={true}
+                        />
+                    </Card>
+                </HorizontalInputContainer>
                 <SubmitButtonContainer>
                     <FlatButton type="submit">
                         Analyze

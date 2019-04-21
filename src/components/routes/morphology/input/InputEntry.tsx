@@ -49,7 +49,12 @@ interface IInputEntryProps {
 }
 
 const InputEntry: React.FC<IInputEntryProps> = ({ id, word, translationData, entryName, canBaseBeDisabled, onValueChanged, onTranslationDataChanged, onDelete }: IInputEntryProps) => {
-    console.log('created entry with id', id);
+
+    function onDeleteClick(event: React.MouseEvent<HTMLDivElement>) {
+        event.preventDefault();
+
+        onDelete(id, event);
+    }
 
     return (
         <>
@@ -78,7 +83,7 @@ const InputEntry: React.FC<IInputEntryProps> = ({ id, word, translationData, ent
                     />
                 </td>
                 <td>
-                    <DeleteButton onClick={e => onDelete(id, e)} title={strings.morphology.inputs.deleteHoverText}>
+                    <DeleteButton onClick={onDeleteClick} title={strings.morphology.inputs.deleteHoverText}>
                         <MaterialIcon icon="delete"/>
                     </DeleteButton>
                 </td>

@@ -27,7 +27,7 @@ const AddIcon = styled.div`
 
 interface IAddInputButtonProps {
     text: string;
-    onClick(): void;
+    onClick(event: React.MouseEvent<HTMLButtonElement>): void;
 }
 
 const AddButton: React.FC<IAddInputButtonProps> = ({ text, onClick }) => {
