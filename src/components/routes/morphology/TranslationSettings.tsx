@@ -29,7 +29,9 @@ export interface ITranslationData {
 
 export function createDefaultTranslationData(): ITranslationData {
     return {
-        isEnabled: {},
+        isEnabled: {
+            [TranslationDataType.base]: true
+        },
         values: {}
     };
 }
