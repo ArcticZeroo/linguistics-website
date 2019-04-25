@@ -16,21 +16,21 @@ const TranslationInputLabel = styled.td`
 `;
 
 export enum TranslationDataType {
-    adjective,
-    plural,
-    pronoun,
-    base
+    adjective = 'adjective',
+    plural = 'plural',
+    determiner = 'determiner',
+    root = 'root'
 }
 
 export interface ITranslationData {
-    isEnabled: { [type: number]: boolean }
-    values: { [type: number]: string }
+    isEnabled: { [type: string]: boolean }
+    values: { [type: string]: string }
 }
 
 export function createDefaultTranslationData(): ITranslationData {
     return {
         isEnabled: {
-            [TranslationDataType.base]: true
+            [TranslationDataType.root]: true
         },
         values: {}
     };
@@ -116,7 +116,16 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ settings, on
         onChange({
             ...settings,
             values: {
-                [TranslationDataType.base]: event.target.value
+                [TranslationDataType.root]: event.target.value
+            }
+        });
+    }
+
+    function onPluralChange(newData: ITranslationData) {
+        onChange({
+            ...newData,
+            values: {
+                [TranslationDataType.plural]: Boolean(newData.isEnabled[TranslationDataType.plural]).toString()
             }
         });
     }
@@ -128,19 +137,19 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ settings, on
                 {
                     canBaseBeDisabled ? (
                         <ConditionalInput
-                            label="Base Word"
-                            type={TranslationDataType.base}
+                            label="Root"
+                            type={TranslationDataType.root}
                             currentData={settings}
                             onChange={onChange}
                         />
                     ) : (
                         <>
                             <td>
-                                Base Word
+                                Root
                             </td>
                             <td/>
                             <td>
-                                <StyledInput value={settings.values[TranslationDataType.base]} onChange={onBaseWordChange} required={true}/>
+                                <StyledInput value={settings.values[TranslationDataType.root]} onChange={onBaseWordChange} required={true}/>
                             </td>
                         </>
                     )
@@ -156,8 +165,8 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ settings, on
             </TranslationInputContainer>
             <TranslationInputContainer>
                 <ConditionalInput
-                    label="Pronoun?"
-                    type={TranslationDataType.pronoun}
+                    label="Determiner?"
+                    type={TranslationDataType.determiner}
                     currentData={settings}
                     onChange={onChange}
                 />
@@ -167,7 +176,7 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ settings, on
                     label="Plural?"
                     type={TranslationDataType.plural}
                     currentData={settings}
-                    onChange={onChange}
+                    onChange={onPluralChange}
                 />
             </TranslationInputContainer>
             </tbody>

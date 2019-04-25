@@ -1,6 +1,6 @@
 function* generateSubstrings(source: string): IterableIterator<string> {
     for (let i = 0; i < source.length - 1; ++i) {
-        for (let j = i + 1; j < source.length; ++j) {
+        for (let j = i + 1; j <= source.length; ++j) {
             yield source.substring(i, j);
         }
     }

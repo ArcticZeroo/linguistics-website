@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import * as React from 'react';
 import styled from 'styled-components';
-import translate from '../../../api/linguistics/morphology/translation';
+import { groupValues } from '../../../api/linguistics/morphology/dependency';
+import DependencyResolver from '../../../api/linguistics/morphology/DependencyResolver';
 import strings from '../../../config/strings';
 import Card from '../../styled/card/Card';
+import { ErrorCard } from '../../styled/card/colored-cards';
 import FlatButton from '../../styled/FlatButton';
 import FlexCenteredColumn from '../../styled/FlexCenteredColumn';
 import InputsTable, { createDefaultWordInputData, IInputState } from './input/InputsTable';
@@ -27,11 +29,40 @@ const SubmitButtonContainer = styled.div`
 const MorphologyRoute = () => {
     const [inputState, setInputState] = useState<IInputState>({ currentId: 1, values: { 0: createDefaultWordInputData() } });
     const [outputState, setOutputState] = useState<IInputState>({ currentId: 1, values: { 0: createDefaultWordInputData() } });
+    const [results, setResults] = useState();
 
     function onFormSubmit(event: React.FormEvent) {
         event.preventDefault();
 
-        translate(inputState, outputState);
+        const groupedInputs = groupValues(Object.values(inputState.values));
+
+        const dependencyResolver = new DependencyResolver(groupedInputs);
+
+        const outputResults = [];
+
+        for (const desiredOutput of Object.values(outputState.values)) {
+            let resolved;
+            try {
+                resolved = dependencyResolver.resolveDependency(desiredOutput.translationData);
+            } catch (e) {
+                console.error(e);
+                outputResults.push(
+                    <ErrorCard title={`Unable to resolve "${desiredOutput.word}"`}>
+                        Something went wrong when trying to resolve this.<br/>
+                        Typically this means that there is not enough data.
+                    </ErrorCard>
+                );
+                continue;
+            }
+
+            outputResults.push(
+                <Card>
+                    {JSON.stringify(resolved)};
+                </Card>
+            );
+        }
+
+        setResults(outputResults);
     }
 
     return (
@@ -61,6 +92,7 @@ const MorphologyRoute = () => {
                     </FlatButton>
                 </SubmitButtonContainer>
             </form>
+            {results}
         </FlexCenteredColumn>
     );
 };
