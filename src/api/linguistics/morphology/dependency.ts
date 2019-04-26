@@ -1,7 +1,7 @@
 import { IWordInputData } from '../../../components/routes/morphology/input/InputsTable';
 import { ITranslationData, TranslationDataType } from '../../../components/routes/morphology/TranslationSettings';
 
-export const possibleDependencies = [TranslationDataType.root, TranslationDataType.adjective, TranslationDataType.determiner, TranslationDataType.plural];
+export const possibleDependencies = [TranslationDataType.root, TranslationDataType.adjective, TranslationDataType.determiner, TranslationDataType.plural, TranslationDataType.preposition];
 
 interface IDataByDependency<T> {
     [TranslationDataType.root]: T;
@@ -19,7 +19,7 @@ export type GroupedInputData = { [type: number]: { [value: string]: IWordInputDa
 export function groupValues(wordDataList: IWordInputData[]): GroupedInputData {
     const grouped: GroupedInputData = {};
 
-    for (const dataType of [TranslationDataType.root, TranslationDataType.adjective, TranslationDataType.plural, TranslationDataType.determiner]) {
+    for (const dataType of possibleDependencies) {
         grouped[dataType] = {};
     }
 

@@ -1,6 +1,7 @@
 import { MannerOfArticulation, PlaceOfArticulation, Voicing } from '../api/linguistics/ipa/consonants';
 import { Rounding, Tenseness, TongueFrontBackness, TongueHeight } from '../api/linguistics/ipa/vowels';
 import { Distribution } from '../api/linguistics/phonology/environment';
+import { TranslationDataType } from '../components/routes/morphology/TranslationSettings';
 
 export default {
     siteName: 'Linguistic Analysis',
@@ -99,5 +100,12 @@ export default {
             deleteHoverText: 'Click to delete this input',
             readOnlyData: 'Please check the box to fill out this field'
         }
+    },
+    translationDataType: {
+        [TranslationDataType.root]: 'Root',
+        [TranslationDataType.plural]: 'Plural',
+        [TranslationDataType.adjective]: 'Adjective',
+        [TranslationDataType.determiner]: 'Determiner',
+        [TranslationDataType.preposition]: 'Preposition'
     }
 }

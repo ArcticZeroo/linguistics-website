@@ -24,7 +24,8 @@ const ToggleContainer = styled.div<IToggleStyledComponentProps>`
   }
 `;
 
-const ToggleIndicator = styled.div<IToggleStyledComponentProps>`
+const ToggleIndicator = styled.input<IToggleStyledComponentProps>`
+  border: none;
   width: ${heightInRem}rem;
   height: ${heightInRem}rem;
   background: #EEE;
@@ -36,15 +37,22 @@ const ToggleIndicator = styled.div<IToggleStyledComponentProps>`
 
 interface IToggleInputProps {
     isChecked: boolean;
-    onClick(event: React.MouseEvent): void;
+    onClick(): void;
 }
 
 const ToggleInput: React.FC<IToggleInputProps> = ({ isChecked, onClick }) => {
+    function onInputKeyDown(event: React.KeyboardEvent) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            onClick();
+        }
+    }
+
     return (
         <ToggleContainer onClick={onClick} isChecked={isChecked}>
-            <ToggleIndicator isChecked={isChecked}/>
+            <ToggleIndicator isChecked={isChecked} onKeyDown={onInputKeyDown} readOnly={true}/>
         </ToggleContainer>
     );
 };
 
-export default ToggleInput;
+export default ToggleInput

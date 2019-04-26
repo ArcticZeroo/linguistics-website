@@ -8,6 +8,7 @@ import Card from '../../styled/card/Card';
 import { ErrorCard } from '../../styled/card/colored-cards';
 import FlatButton from '../../styled/FlatButton';
 import FlexCenteredColumn from '../../styled/FlexCenteredColumn';
+import DependencyResult from './DependencyResult';
 import InputsTable, { createDefaultWordInputData, IInputState } from './input/InputsTable';
 
 // dog
@@ -36,6 +37,9 @@ const MorphologyRoute = () => {
 
         const groupedInputs = groupValues(Object.values(inputState.values));
 
+        console.log('input state:', inputState);
+        console.log('grouped inputs:', groupedInputs);
+
         const dependencyResolver = new DependencyResolver(groupedInputs);
 
         const outputResults = [];
@@ -43,7 +47,7 @@ const MorphologyRoute = () => {
         for (const desiredOutput of Object.values(outputState.values)) {
             let resolved;
             try {
-                resolved = dependencyResolver.resolveDependency(desiredOutput.translationData);
+                resolved = dependencyResolver.resolveDependencyString(desiredOutput.translationData);
             } catch (e) {
                 console.error(e);
                 outputResults.push(
@@ -56,9 +60,7 @@ const MorphologyRoute = () => {
             }
 
             outputResults.push(
-                <Card>
-                    {JSON.stringify(resolved)};
-                </Card>
+                <DependencyResult source={desiredOutput} resolvedDependencies={resolved}/>
             );
         }
 

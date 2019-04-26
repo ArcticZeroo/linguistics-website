@@ -32,7 +32,7 @@ interface IAddInputButtonProps {
 
 const AddButton: React.FC<IAddInputButtonProps> = ({ text, onClick }) => {
     return (
-        <ButtonContainer onClick={onClick}>
+        <ButtonContainer onClick={onClick} type='button'>
             {text}
             <AddIcon>
                 <MaterialIcon icon="add"/>

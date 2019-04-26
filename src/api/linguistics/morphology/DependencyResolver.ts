@@ -80,7 +80,7 @@ export default class DependencyResolver {
             throw new UnresolvableDependencyException('Only a single dependency exists on this word. This should never happen');
         }
 
-        const complementResolutions = this.resolveDependency(wordData.translationData, otherDependencyTypes);
+        const complementResolutions = this.resolveDependencyString(wordData.translationData, otherDependencyTypes);
 
         console.log('successfully resolved all complement dependencies');
         console.log(complementResolutions);
@@ -95,6 +95,17 @@ export default class DependencyResolver {
         return wordString;
     }
 
+    private resolveSingleDependencyUsingAlone(dependencyType: TranslationDataType, words: IWordInputData[]) {
+        for (const wordData of words) {
+            const availableDependencies = getAvailableDependencies(wordData.translationData);
+
+            if (availableDependencies.length === 1 && availableDependencies[0] === dependencyType) {
+                return wordData.word;
+            }
+        }
+
+    }
+
     private resolveSingleDependency(dependencyType: TranslationDataType, dependencyValue: string) {
         console.log('resolving single dependency', `"${dependencyValue}"`, 'of type', dependencyType);
 
@@ -102,6 +113,12 @@ export default class DependencyResolver {
 
         if (!wordsWithSameDependency || !wordsWithSameDependency.length) {
             throw new UnresolvableDependencyException(`No words exist with the desired dependency "${dependencyValue}" and type "${dependencyType}"`);
+        }
+
+        let resolvedWithAlone = this.resolveSingleDependencyUsingAlone(dependencyType, wordsWithSameDependency);
+
+        if (resolvedWithAlone) {
+            return resolvedWithAlone;
         }
 
         if (wordsWithSameDependency.length >= 2) {
@@ -142,7 +159,7 @@ export default class DependencyResolver {
         throw new UnresolvableDependencyException('Unable to resolve dependency with all available methods of inference');
     }
 
-    resolveDependency(source: ITranslationData, dependencyFilter?: Array<TranslationDataType>) {
+    resolveDependencyString(source: ITranslationData, dependencyFilter?: Optional<Array<TranslationDataType>>) {
         console.log('resolving from source', source, 'with filter', dependencyFilter);
 
         const resolvedDependencies = {};

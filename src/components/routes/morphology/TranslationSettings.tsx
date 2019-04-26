@@ -19,6 +19,7 @@ export enum TranslationDataType {
     adjective = 'adjective',
     plural = 'plural',
     determiner = 'determiner',
+    preposition = 'preposition',
     root = 'root'
 }
 
@@ -93,7 +94,7 @@ const ConditionalInput: React.FC<IBooleanInputProps> = ({ label, type, onChange,
 
             <td>
                 <StyledInput
-                    value={currentData.values[type]}
+                    value={currentData.values[type] || ''}
                     onChange={onValueChanged}
                     readOnly={isReadOnly}
                     title={isReadOnly ? strings.morphology.inputs.readOnlyData : ''}
@@ -116,6 +117,7 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ settings, on
         onChange({
             ...settings,
             values: {
+                ...settings.values,
                 [TranslationDataType.root]: event.target.value
             }
         });
@@ -125,6 +127,7 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ settings, on
         onChange({
             ...newData,
             values: {
+                ...newData.values,
                 [TranslationDataType.plural]: Boolean(newData.isEnabled[TranslationDataType.plural]).toString()
             }
         });
@@ -167,6 +170,14 @@ const TranslationSettings: React.FC<ITranslationSettingsProps> = ({ settings, on
                 <ConditionalInput
                     label="Determiner?"
                     type={TranslationDataType.determiner}
+                    currentData={settings}
+                    onChange={onChange}
+                />
+            </TranslationInputContainer>
+            <TranslationInputContainer>
+                <ConditionalInput
+                    label="Preposition?"
+                    type={TranslationDataType.preposition}
                     currentData={settings}
                     onChange={onChange}
                 />

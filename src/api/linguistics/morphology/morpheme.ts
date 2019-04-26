@@ -3,5 +3,6 @@ export enum MorphemeType {
     suffix,
     infix,
     circumfix,
-    root
+    root,
+    unknown
 }
