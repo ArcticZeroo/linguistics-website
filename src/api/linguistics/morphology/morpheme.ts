@@ -1,8 +1,8 @@
 export enum MorphemeType {
-    prefix,
-    suffix,
-    infix,
-    circumfix,
-    root,
-    unknown
+    prefix = 'prefix',
+    suffix = 'suffix',
+    infix = 'infix',
+    circumfix = 'circumfix',
+    root = 'root',
+    unknown = 'unknown'
 }

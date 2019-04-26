@@ -9,9 +9,11 @@ import {
     getAvailableDependencies,
     GroupedInputData
 } from './dependency';
+import { MorphemeType } from './morpheme';
 
-interface IDependencyResolverParams {
-    groupedInputs: GroupedInputData;
+export interface IResolvedDependency {
+    value: string;
+    type: MorphemeType;
 }
 
 export default class DependencyResolver {
@@ -80,7 +82,7 @@ export default class DependencyResolver {
             throw new UnresolvableDependencyException('Only a single dependency exists on this word. This should never happen');
         }
 
-        const complementResolutions = this.resolveDependencyString(wordData.translationData, otherDependencyTypes);
+        const complementResolutions = this.resolveDependencyStrings(wordData.translationData, otherDependencyTypes);
 
         console.log('successfully resolved all complement dependencies');
         console.log(complementResolutions);
@@ -159,7 +161,7 @@ export default class DependencyResolver {
         throw new UnresolvableDependencyException('Unable to resolve dependency with all available methods of inference');
     }
 
-    resolveDependencyString(source: ITranslationData, dependencyFilter?: Optional<Array<TranslationDataType>>) {
+    private resolveDependencyStrings(source: ITranslationData, dependencyFilter?: Optional<Array<TranslationDataType>>) {
         console.log('resolving from source', source, 'with filter', dependencyFilter);
 
         const resolvedDependencies = {};
@@ -209,6 +211,101 @@ export default class DependencyResolver {
                 .set(dependencyValue, resolved);
 
             resolvedDependencies[dependencyType] = resolved;
+        }
+
+        return resolvedDependencies;
+    }
+
+    private canResolveAllDependencies(source: ITranslationData) {
+        try {
+            this.resolveDependencyStrings(source);
+        } catch (e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private isDependencyInfix(baseWord: string, rootValue: string, dependencyValue: string) {
+        const rootIsInWord = baseWord.includes(rootValue);
+
+        return !rootIsInWord && rootValue.replace(dependencyValue, '').includes(rootValue);
+    }
+
+    private isDependencyCircumfix(prefixes: string, suffixes: string, dependencyValue: string) {
+        if (dependencyValue.length < 2) {
+            return false;
+        }
+
+        const pre = dependencyValue.split('');
+        const post = [];
+
+        do {
+            post.unshift(pre.pop());
+
+            if (prefixes.includes(pre.join('')) && suffixes.includes(post.join(''))) {
+                return true;
+            }
+        } while(post.length < dependencyValue.length - 1);
+
+        return false;
+    }
+
+    private resolveSingleDependencyMorphemeType(dependencyType: TranslationDataType, dependencyValue: string) {
+        if (dependencyType === TranslationDataType.root) {
+            return MorphemeType.root;
+        }
+
+        const wordsWithSameDependency: Optional<Array<IWordInputData>> = this._groupedInputs[dependencyType][dependencyValue];
+
+        if (!wordsWithSameDependency || !wordsWithSameDependency.length) {
+            return MorphemeType.unknown;
+        }
+
+        for (const wordData of wordsWithSameDependency) {
+            if (!this.canResolveAllDependencies(wordData.translationData)) {
+                continue;
+            }
+
+            const rootValue = this.getCachedResolution(TranslationDataType.root, wordData.translationData.values[dependencyType]);
+            const dependencyValue = this.getCachedResolution(dependencyType, wordData.translationData.values[dependencyType]);
+
+            if (!rootValue || !dependencyValue) {
+                continue;
+            }
+
+            if (this.isDependencyInfix(wordData.word, rootValue, dependencyValue)) {
+                return MorphemeType.infix;
+            }
+
+            const [prefixes, suffixes] = wordData.word.split(rootValue);
+
+            if (prefixes && prefixes.includes(dependencyValue)) {
+                return MorphemeType.prefix;
+            }
+
+            if (suffixes && suffixes.includes(dependencyValue)) {
+                return MorphemeType.suffix;
+            }
+
+            if (prefixes && suffixes && this.isDependencyCircumfix(prefixes, suffixes, dependencyValue)) {
+                return MorphemeType.circumfix;
+            }
+        }
+
+        return MorphemeType.unknown;
+    }
+
+    resolveDependencies(source: ITranslationData) {
+        const resolvedStrings = this.resolveDependencyStrings(source);
+
+        const resolvedDependencies = {};
+
+        for (const dependencyType of generateAvailableDependencies(source)) {
+            resolvedDependencies[dependencyType] = {
+                value: resolvedStrings[dependencyType],
+                type: this.resolveSingleDependencyMorphemeType(dependencyType, resolvedStrings[dependencyType])
+            }
         }
 
         return resolvedDependencies;

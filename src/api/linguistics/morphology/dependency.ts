@@ -10,10 +10,6 @@ interface IDataByDependency<T> {
     [TranslationDataType.plural]: T;
 }
 
-export interface IDependency {
-
-}
-
 export type GroupedInputData = { [type: number]: { [value: string]: IWordInputData[] } };
 
 export function groupValues(wordDataList: IWordInputData[]): GroupedInputData {

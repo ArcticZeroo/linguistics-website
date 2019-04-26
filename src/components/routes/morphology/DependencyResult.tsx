@@ -1,11 +1,12 @@
 import * as React from 'react';
+import { IResolvedDependency } from '../../../api/linguistics/morphology/DependencyResolver';
 import strings from '../../../config/strings';
 import Card from '../../styled/card/Card';
 import { IWordInputData } from './input/InputsTable';
 
 interface IDependencyResultProps {
     source: IWordInputData;
-    resolvedDependencies: { [type: string]: string };
+    resolvedDependencies: { [type: string]: IResolvedDependency };
 }
 
 const DependencyResult: React.FC<IDependencyResultProps> = ({ source, resolvedDependencies }) => {
@@ -21,7 +22,7 @@ const DependencyResult: React.FC<IDependencyResultProps> = ({ source, resolvedDe
                     {source.translationData.values[type]}
                 </td>
                 <td>
-                    {resolvedDependencies[type]}
+                    {JSON.stringify(resolvedDependencies[type])}
                 </td>
             </tr>
         );

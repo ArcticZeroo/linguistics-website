@@ -47,7 +47,7 @@ const MorphologyRoute = () => {
         for (const desiredOutput of Object.values(outputState.values)) {
             let resolved;
             try {
-                resolved = dependencyResolver.resolveDependencyString(desiredOutput.translationData);
+                resolved = dependencyResolver.resolveDependencies(desiredOutput.translationData);
             } catch (e) {
                 console.error(e);
                 outputResults.push(
