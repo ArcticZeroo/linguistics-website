@@ -251,6 +251,43 @@ export default class DependencyResolver {
         return false;
     }
 
+    private resolveSingleDependencyMorphemeTypeForSingleWord(wordData: IWordInputData, resolvedDependencyValue: string) {
+        console.log('trying to resolve from word', wordData.word, wordData);
+
+        if (!this.canResolveAllDependencies(wordData.translationData)) {
+            console.log('not all dependencies could be resolved :(');
+            return MorphemeType.unknown;
+        }
+
+        const rootDependencyValue = wordData.translationData.values[TranslationDataType.root];
+        const resolvedRootValue = this.getCachedResolution(TranslationDataType.root, rootDependencyValue);
+
+        if (!resolvedRootValue) {
+            console.log('root dependency is missing for unknown reason');
+            return MorphemeType.unknown;
+        }
+
+        if (this.isDependencyInfix(wordData.word, resolvedRootValue, resolvedDependencyValue)) {
+            return MorphemeType.infix;
+        }
+
+        const [prefixes, suffixes] = wordData.word.split(resolvedRootValue);
+
+        if (prefixes && prefixes.includes(resolvedDependencyValue)) {
+            return MorphemeType.prefix;
+        }
+
+        if (suffixes && suffixes.includes(resolvedDependencyValue)) {
+            return MorphemeType.suffix;
+        }
+
+        if (prefixes && suffixes && this.isDependencyCircumfix(prefixes, suffixes, resolvedDependencyValue)) {
+            return MorphemeType.circumfix;
+        }
+
+        return MorphemeType.unknown;
+    }
+
     private resolveSingleDependencyMorphemeType(source: ITranslationData, dependencyType: TranslationDataType) {
         const dependencyValue = source.values[dependencyType];
         const resolvedDependencyValue = this.getCachedResolution(dependencyType, dependencyValue);
@@ -274,42 +311,29 @@ export default class DependencyResolver {
             return MorphemeType.unknown;
         }
 
+        const wordVotes: Map<MorphemeType, number> = new Map();
+        const highestVotedType = {
+            type: MorphemeType.unknown,
+            value: 0
+        };
+
         for (const wordData of wordsWithSameDependency) {
-            console.log('trying to resolve from word', wordData.word, wordData);
+            const morphemeTypeInThisWord = this.resolveSingleDependencyMorphemeTypeForSingleWord(wordData, resolvedDependencyValue);
 
-            if (!this.canResolveAllDependencies(wordData.translationData)) {
-                console.log('not all dependencies could be resolved :(');
+            if (morphemeTypeInThisWord === MorphemeType.unknown) {
                 continue;
             }
 
-            const rootDependencyValue = wordData.translationData.values[TranslationDataType.root];
-            const resolvedRootValue = this.getCachedResolution(TranslationDataType.root, rootDependencyValue);
+            const newCount = (wordVotes.get(morphemeTypeInThisWord) || 0) + 1;
+            wordVotes.set(morphemeTypeInThisWord, newCount);
 
-            if (!resolvedRootValue) {
-                console.log('root dependency is missing for unknown reason');
-                continue;
-            }
-
-            if (this.isDependencyInfix(wordData.word, resolvedRootValue, resolvedDependencyValue)) {
-                return MorphemeType.infix;
-            }
-
-            const [prefixes, suffixes] = wordData.word.split(resolvedRootValue);
-
-            if (prefixes && prefixes.includes(resolvedDependencyValue)) {
-                return MorphemeType.prefix;
-            }
-
-            if (suffixes && suffixes.includes(resolvedDependencyValue)) {
-                return MorphemeType.suffix;
-            }
-
-            if (prefixes && suffixes && this.isDependencyCircumfix(prefixes, suffixes, resolvedDependencyValue)) {
-                return MorphemeType.circumfix;
+            if (newCount > highestVotedType.value) {
+                highestVotedType.type = morphemeTypeInThisWord;
+                highestVotedType.value = newCount;
             }
         }
 
-        return MorphemeType.unknown;
+        return highestVotedType.type;
 
     }
 
