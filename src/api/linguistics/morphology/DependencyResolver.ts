@@ -251,60 +251,79 @@ export default class DependencyResolver {
         return false;
     }
 
-    private resolveSingleDependencyMorphemeType(dependencyType: TranslationDataType, dependencyValue: string) {
+    private resolveSingleDependencyMorphemeType(source: ITranslationData, dependencyType: TranslationDataType) {
+        const dependencyValue = source.values[dependencyType];
+        const resolvedDependencyValue = this.getCachedResolution(dependencyType, dependencyValue);
+
+        console.log('resolving morpheme for type', dependencyType, 'and value', dependencyValue, 'with resolved value', resolvedDependencyValue);
+
+        if (!resolvedDependencyValue) {
+            console.log('type is not already resolved');
+            return MorphemeType.unknown;
+        }
+
         if (dependencyType === TranslationDataType.root) {
+            console.log('trying to resolve morpheme type of root');
             return MorphemeType.root;
         }
 
         const wordsWithSameDependency: Optional<Array<IWordInputData>> = this._groupedInputs[dependencyType][dependencyValue];
 
         if (!wordsWithSameDependency || !wordsWithSameDependency.length) {
+            console.log('no comparison dependencies for type', dependencyType, 'and value', dependencyValue);
             return MorphemeType.unknown;
         }
 
         for (const wordData of wordsWithSameDependency) {
+            console.log('trying to resolve from word', wordData.word, wordData);
+
             if (!this.canResolveAllDependencies(wordData.translationData)) {
+                console.log('not all dependencies could be resolved :(');
                 continue;
             }
 
-            const rootValue = this.getCachedResolution(TranslationDataType.root, wordData.translationData.values[dependencyType]);
-            const dependencyValue = this.getCachedResolution(dependencyType, wordData.translationData.values[dependencyType]);
+            const rootDependencyValue = wordData.translationData.values[TranslationDataType.root];
+            const resolvedRootValue = this.getCachedResolution(TranslationDataType.root, rootDependencyValue);
 
-            if (!rootValue || !dependencyValue) {
+            if (!resolvedRootValue) {
+                console.log('root dependency is missing for unknown reason');
                 continue;
             }
 
-            if (this.isDependencyInfix(wordData.word, rootValue, dependencyValue)) {
+            if (this.isDependencyInfix(wordData.word, resolvedRootValue, resolvedDependencyValue)) {
                 return MorphemeType.infix;
             }
 
-            const [prefixes, suffixes] = wordData.word.split(rootValue);
+            const [prefixes, suffixes] = wordData.word.split(resolvedRootValue);
 
-            if (prefixes && prefixes.includes(dependencyValue)) {
+            if (prefixes && prefixes.includes(resolvedDependencyValue)) {
                 return MorphemeType.prefix;
             }
 
-            if (suffixes && suffixes.includes(dependencyValue)) {
+            if (suffixes && suffixes.includes(resolvedDependencyValue)) {
                 return MorphemeType.suffix;
             }
 
-            if (prefixes && suffixes && this.isDependencyCircumfix(prefixes, suffixes, dependencyValue)) {
+            if (prefixes && suffixes && this.isDependencyCircumfix(prefixes, suffixes, resolvedDependencyValue)) {
                 return MorphemeType.circumfix;
             }
         }
 
         return MorphemeType.unknown;
+
     }
 
     resolveDependencies(source: ITranslationData) {
         const resolvedStrings = this.resolveDependencyStrings(source);
+
+        console.log('dependency cache after resolving strings:', this._resolvedDependenciesByTypeByName);
 
         const resolvedDependencies = {};
 
         for (const dependencyType of generateAvailableDependencies(source)) {
             resolvedDependencies[dependencyType] = {
                 value: resolvedStrings[dependencyType],
-                type: this.resolveSingleDependencyMorphemeType(dependencyType, resolvedStrings[dependencyType])
+                type: this.resolveSingleDependencyMorphemeType(source, dependencyType)
             }
         }
 
